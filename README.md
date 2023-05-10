@@ -6,6 +6,10 @@ Bibliotecas utilizadas:
 
 > https://materializecss.com/
 
-> Ajax com jQuery
+TEAMS:
 
-Exemplo disponível em: https://tonanuvem.github.io/page/
+Exemplo disponível em: https://tonanuvem.github.io/page/teams/
+
+SLACK:
+
+Exemplo disponível em: https://tonanuvem.github.io/page/slack/
