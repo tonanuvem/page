@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <script type="text/javascript" src="https://code.jquery.com/jquery-1.5.2.js"></script>
     <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <!-- https://www.npmjs.com/package/teams-web-send -->
+    <script src="https://unpkg.com/teams-web-send@0.1.1/dist/tws.umd.production.min.js"></script>
     <title>Frontend Web Server</title>
+    <meta charset="utf-8">
   </head>
   <body>
     <div class="container">
@@ -38,6 +40,24 @@
                         <label for="msgInput">Digite uma mensagem</label>
                       </div>
                     </td>                    
+                  </tr>
+                  <tr>
+                    <td>Usuario</td>
+                    <td>
+                      <div class="input-field col s12">
+                        <textarea id="user" class="materialize-textarea">NOME ALUNO</textarea>
+                        <label for="user">Digite seu nome</label>
+                      </div>
+                    </td>                       
+                  </tr>
+                  <tr>
+                    <td>Icone <a href="https://www.iconfinder.com/search/icons?family=organic-1" target="_blank">(escolher)</a></td>
+                    <td>
+                      <div class="input-field col s12">
+                        <textarea id="icone" class="materialize-textarea">https://cdn4.iconfinder.com/data/icons/pop-scenes/1000/workspace___work_from_home_laptop_computer_drink_beverage-1024.png</textarea>
+                        <label for="icone">Escolha seu icone</label>
+                      </div>
+                    </td>  
                   </tr>
                   <tr>
                     <td>Clicar</td>
@@ -76,30 +96,29 @@
     M.toast({html: 'Enviando a mensagem usando Ajax / jQuery!', classes: 'rounded'});
     var webhook = document.getElementById('webhook').value
     var msg = document.getElementById('msgInput').value
-    // format payload
-    var payload = {
-      "channel":chan,
-      "text": msg
-    };
-    var sdata = JSON.stringify(payload)
-    // log in console
-    console.log(sdata)
-    // post
-     $.ajax({
-       url: webhook,
-       type: 'POST',
-       processData: true,
-       data : sdata ,
-       success : function(data) {
-         // success will show on page
-         console.log(data)
-         $('#result').html(data);
-       },
-       error: function(data){
-         // error will show error object
-         console.log(data)
-         //$('#result').html("error:"+JSON.stringify(data));
-      }
-     });
+    var user = document.getElementById('user').value
+    var icone = document.getElementById('icone').value
+    var resultDiv = document.querySelector("#result"); // seleciona o elemento HTML que vai receber o resultado
+    const card = `{
+      '@type': 'MessageCard',
+      '@context': 'http://schema.org/extensions',
+      'themeColor': "0072C6", // light blue
+      'summary': 'Summary description',
+      "sections": [{
+          "activityTitle": "${msg}",
+          "activitySubtitle": "Enviado por ${user} via FIAP Page App",
+          "activityImage": "${icone}"
+      }]
+    }`;
+    try {
+      const sendMessage = window.tws.bootstrap();
+	    sendMessage(webhook, card).then(() => {
+        console.log('Solicitação enviada');
+	    });
+      resultDiv.textContent = 'Solicitação enviada';
+    } catch (error) {
+      console.error("Ocorreu um erro:", error); // exibe a mensagem de erro no console
+      resultDiv.textContent = `Ocorreu um erro: ${error.message}`;
+    }
   }
 </script>
