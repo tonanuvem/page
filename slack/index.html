@@ -113,7 +113,7 @@
       "text": msg,
       "icon_emoji": icone,
     };
-    var sdata = payload //JSON.stringify(payload)
+    var sdata = JSON.stringify(payload)
     // log in console
     console.log(sdata)
     // post
@@ -130,7 +130,7 @@
        error: function(data){
          // error will show error object
          console.log(data)
-         //$('#result').html("error:"+JSON.stringify(data));
+         $('#result').html("error:"+JSON.stringify(data));
       }
      });
   }
