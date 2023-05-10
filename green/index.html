@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta http-equiv="content-type" content="text/html; charset=windows-1252">
-    <script type="text/javascript" src="http://code.jquery.com/jquery-1.5.2.js"></script>
+    <meta http-equiv="content-type" content="text/html; charset=utf8">
     <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <!-- https://www.npmjs.com/package/teams-web-send -->
+    <script src="https://unpkg.com/teams-web-send@0.1.1/dist/tws.umd.production.min.js"></script>
     <script>
       $(document).ready(function(){
         //$('.parallax').parallax();
@@ -28,7 +29,7 @@
       background-attachment: fixed;
       background-position: center;
       background-repeat: no-repeat;
-      background-size: cover;
+      background-size: cover; -ms-background-size: cover;   -o-background-size: cover;   -moz-background-size: cover;   -webkit-background-size: cover;
 
     }
     .bgimg-1 {
@@ -53,44 +54,6 @@
       }
     }  
     </style>
-    <script type="text/javascript">
-    // Definir postMSG(), conferir Canal e Webhook:
-      function postMSG(){
-        M.toast({html: 'Enviando a mensagem usando Ajax / jQuery!', classes: 'rounded'});
-        var webhook = document.getElementById('webhook').value
-        var msg = document.getElementById('msgInput').value
-        var chan = document.getElementById('canal').value
-        var user = document.getElementById('user').value
-        var icone = document.getElementById('icone').value
-        // format payload for slack
-        var payload = {
-          "channel":chan,
-          "username": user,
-          "text": msg,
-          "icon_emoji": icone,
-        };
-        var sdata = JSON.stringify(payload)
-        // log in console
-        console.log(sdata)
-        // post
-         $.ajax({
-           url: webhook,
-           type: 'POST',
-           processData: true,
-           data : sdata ,
-           success : function(data) {
-             // success will show on page
-             console.log(data)
-             $('#result').html(data);
-           },
-           error: function(data){
-             // error will show error object
-             console.log(data)
-             //$('#result').html("error:"+JSON.stringify(data));
-          }
-         });
-      }
-    </script>
     <title>Frontend Web Server</title>
   </head>
   <body>
@@ -101,7 +64,9 @@
           <div class="card green darken-4">
             <div class="card-content white-text">
               <div class="card-title">NOME ALUNO <br>
-                Envio de mensagem Slack</div>
+                Envio de mensagem utilizando Webhooks <br><br>
+                Versão desta Página = GREEN <br>
+              </div>
             </div>
             <div class="card-content white">
               <table class="bordered">
@@ -110,41 +75,22 @@
                   <tr>
                     <td>URL Webhook</td>
                     <td>
-                      <div class="input-field col s12"> <textarea id="webhook"
-class="materialize-textarea"></textarea>
-                        <label for="webhook">Digite o Webhook</label> </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Canal</td>
-                    <td>
-                      <div class="input-field col s12"> <textarea id="canal" class="materialize-textarea">#fiap</textarea>
-                        <label for="canal">#Canal</label> </div>
+                      <div class="input-field col s12">
+                        <textarea id="webhook" class="materialize-textarea"></textarea>
+                        <label for="webhook">Inserir Webhook</label>
+                      </div>
                     </td>
                   </tr>
                   <tr>
                     <td>Mensagem</td>
                     <td>
-                      <div class="input-field col s12"> <textarea id="msgInput"
-class="materialize-textarea"></textarea>
-                        <label for="msgInput">Digite uma mensagem</label> </div>
-                    </td>
+                      <div class="input-field col s12">
+                        <textarea id="msgInput" class="materialize-textarea"></textarea>
+                        <label for="msgInput">Digite uma mensagem</label>
+                      </div>
+                    </td>                    
                   </tr>
                   <tr>
-                    <td>Usuario</td>
-                    <td>
-                      <div class="input-field col s12"> <textarea id="user" class="materialize-textarea">NOME ALUNO_app</textarea>
-                        <label for="user">Digite seu nome</label> </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Icone <a href="https://www.webfx.com/tools/emoji-cheat-sheet/"
-                        target="_blank">(escolher)</a></td>
-                    <td>
-                      <div class="input-field col s12"> <textarea id="icone" class="materialize-textarea">:cloud:</textarea>
-                        <label for="icone">Escolha seu icone</label> </div>
-                    </td>
-                  </tr>
                   <tr>
                     <td>Clicar</td>
                     <td>
@@ -175,3 +121,26 @@ class="materialize-textarea"></textarea>
     </div>
   </body>
 </html>
+
+<script type="text/javascript">
+// Definir a função postMSG(), conferir Canal e Webhook:
+  function postMSG(){
+    M.toast({html: 'Enviando a mensagem !', classes: 'rounded'});
+    var webhook = document.getElementById('webhook').value
+    var msg = document.getElementById('msgInput').value
+    var resultDiv = document.querySelector("#result"); // seleciona o elemento HTML que vai receber o resultado
+    const card = `{
+      'text': '${msg}'
+    }`;
+    try {
+      const sendMessage = window.tws.bootstrap();
+	    sendMessage(webhook, card).then(() => {
+        console.log('Solicitação enviada');
+	    });
+      resultDiv.textContent = 'Solicitação enviada';
+    } catch (error) {
+      console.error("Ocorreu um erro:", error); // exibe a mensagem de erro no console
+      resultDiv.textContent = `Ocorreu um erro: ${error.message}`;
+    }
+  }
+</script>
