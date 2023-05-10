@@ -1,12 +1,15 @@
+
 <!DOCTYPE html>
 <html>
   <head>
-    <script type="text/javascript" src="https://code.jquery.com/jquery-1.5.2.js"></script>
     <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <!-- https://www.npmjs.com/package/teams-web-send -->
+    <script src="https://unpkg.com/teams-web-send@0.1.1/dist/tws.umd.production.min.js"></script>
     <title>Frontend Web Server</title>
+    <meta charset="utf-8">
   </head>
   <body>
     <div class="container">
@@ -31,15 +34,6 @@
                     </td>
                   </tr>
                   <tr>
-                    <td>Canal</td>
-                    <td>
-                      <div class="input-field col s12">
-                        <textarea id="canal" class="materialize-textarea">#escolher</textarea>
-                        <label for="canal">#Canal</label>
-                      </div>
-                    </td>                    
-                  </tr>
-                  <tr>
                     <td>Mensagem</td>
                     <td>
                       <div class="input-field col s12">
@@ -49,23 +43,6 @@
                     </td>                    
                   </tr>
                   <tr>
-                    <td>Usuario</td>
-                    <td>
-                      <div class="input-field col s12">
-                        <textarea id="user" class="materialize-textarea">NOME ALUNO_app</textarea>
-                        <label for="user">Digite seu nome</label>
-                      </div>
-                    </td>                       
-                  </tr>
-                  <tr>
-                    <td>Icone <a href="https://www.webfx.com/tools/emoji-cheat-sheet/" target="_blank">(escolher)</a></td>
-                    <td>
-                      <div class="input-field col s12">
-                        <textarea id="icone" class="materialize-textarea">:cloud:</textarea>
-                        <label for="icone">Escolha seu icone</label>
-                      </div>
-                    </td>  
-                  </tr>
                   <tr>
                     <td>Clicar</td>
                     <td>
@@ -100,38 +77,22 @@
 <script type="text/javascript">
 // Definir a função postMSG(), conferir Canal e Webhook:
   function postMSG(){
-    M.toast({html: 'Enviando a mensagem usando Ajax / jQuery!', classes: 'rounded'});
+    M.toast({html: 'Enviando a mensagem !', classes: 'rounded'});
     var webhook = document.getElementById('webhook').value
     var msg = document.getElementById('msgInput').value
-    var chan = document.getElementById('canal').value
-    var user = document.getElementById('user').value
-    var icone = document.getElementById('icone').value
-    // format payload for slack
-    var payload = {
-      "channel":chan,
-      "username": user,
-      "text": msg,
-      "icon_emoji": icone,
-    };
-    var sdata = JSON.stringify(payload)
-    // log in console
-    console.log(sdata)
-    // post
-     $.ajax({
-       url: webhook,
-       type: 'POST',
-       processData: true,
-       data : sdata ,
-       success : function(data) {
-         // success will show on page
-         console.log(data)
-         $('#result').html(data);
-       },
-       error: function(data){
-         // error will show error object
-         console.log(data)
-         //$('#result').html("error:"+JSON.stringify(data));
-      }
-     });
+    var resultDiv = document.querySelector("#result"); // seleciona o elemento HTML que vai receber o resultado
+    const card = `{
+      'text': '${msg}'
+    }`;
+    try {
+      const sendMessage = window.tws.bootstrap();
+	    sendMessage(webhook, card).then(() => {
+        console.log('Solicitação enviada');
+	    });
+      resultDiv.textContent = 'Solicitação enviada';
+    } catch (error) {
+      console.error("Ocorreu um erro:", error); // exibe a mensagem de erro no console
+      resultDiv.textContent = `Ocorreu um erro: ${error.message}`;
+    }
   }
 </script>
