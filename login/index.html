@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Hands-On : Prof Andre</title>
+<meta name="viewport" content="width=device-width, initial-scale=1", charset=utf8">
+
+<script>
+function aluno() {
+  let text = window.location.href; 
+  let url = text.replace("http://", "http://aluno.");
+  window.location.replace(url);
+}
+function prof() {
+  let text = window.location.href; 
+  let url = text.replace("http://", "http://prof.");
+  window.location.replace(url);
+}
+</script>
+
+<style>
+body, html {
+  height: 100%;
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.hero-image {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("https://tonanuvem.github.io/page/docs/labimagem.png");
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+}
+
+.hero-text {
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+}
+
+.hero-text button:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+
+.alunobutton {
+  background-color: #6495ED;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+.profbutton {
+  background-color: #04AA6D;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+.imgcontainer {
+  text-align: center;
+  margin: 24px 0 12px 0;
+}
+
+img.avatar {
+  width: 40%;
+  border-radius: 50%;
+}
+
+.container {
+  padding: 16px;
+}
+
+</style>
+
+</head>
+<body>
+
+<div class="hero-image">
+  <div class="hero-text">
+    <h1 style="font-size:50px">LABS HANDS-ON</h1>
+    <p>FIAP | Prof. Andre</p>
+    
+    <div class="imgcontainer">
+      <img src="https://www.w3schools.com/howto/img_avatar2.png" alt="Avatar" class="avatar">
+    </div>
+    <div class="container">
+      <button class="alunobutton" onclick="aluno()">Login como ALUNO</button>
+      <button class="profbutton" onclick="prof()">Login como PROFESSOR</button>
+    </div>
+    
+  </div>
+  </div>
+</div>
+
+</body>
+</html>
