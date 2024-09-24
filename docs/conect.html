@@ -7,8 +7,8 @@
 <script>
 function open() {
   let text = window.location.href; 
-  let porta = document.getElementById("myText").value;
-  let url = text + ":" + porta
+  let porta = ":" + document.getElementById("myText").value;
+  let url = text.replace(/.$/,porta)
   window.open(url);
 }
 </script>
