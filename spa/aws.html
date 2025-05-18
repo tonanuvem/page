@@ -93,7 +93,7 @@
 <body>
     <div class="container mx-auto max-w-4xl container-padding">
         <div class="title-bar">Referência Rápida AWS CLI e Amazon EKS</div>
-        <div class="content-section">
+        <div class="content-section" style="margin-bottom: 1.5rem;">
             <div class="section-title">1. Configurando seu Ambiente:</div>
             <div class="subsection-title">Verificar a versão da AWS CLI:</div>
             <div class="command-block">
@@ -113,7 +113,26 @@
         </div>
 
         <div class="content-section">
-            <div class="section-title">2. Informações sobre o Cluster:</div>
+            <div class="section-title">2. Criação do Cluster:</div>
+            <div class="subsection-title">Criar um cluster EKS:</div>
+            <div class="command-block">
+                <code>aws eks create-cluster --name &lt;nome_do_cluster&gt; --role-arn &lt;arn_da_role_iam&gt; --vpc-config subnetIds=&lt;subnet-id1&gt;,&lt;subnet-id2&gt;,securityGroupIds=&lt;security-group-id&gt; --kubernetes-version &lt;versao_kubernetes&gt;</code>
+                <span class="command-comment">
+                    Cria um novo cluster EKS.  Substitua os placeholders pelos valores do seu ambiente.
+                </span>
+            </div>
+            <div class="subsection-title">Exemplo de criação de cluster EKS:</div>
+             <div class="command-block">
+                <code>aws eks create-cluster --name my-eks-cluster  --role-arn arn:aws:iam::123456789012:role/eksClusterRole  --vpc-config subnetIds=subnet-0123456789abcdef0,subnet-abcdef01234567890,securityGroupIds=sg-0123456789abcdef0  --kubernetes-version 1.28
+                </code>
+                <span class="command-comment">
+                    Este é um exemplo de como o comando pode ser usado. Os valores são ilustrativos.
+                </span>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <div class="section-title">3. Informações sobre o Cluster:</div>
             <div class="subsection-title">Listar seus clusters EKS:</div>
             <div class="command-block">
                 <code>aws eks list-clusters --region &lt;sua_região_aws&gt;</code>
@@ -137,7 +156,7 @@
         </div>
 
         <div class="content-section">
-            <div class="section-title">3. Interagindo com Workloads (usando <code>kubectl</code>):</div>
+            <div class="section-title">4. Interagindo com Workloads (usando <code>kubectl</code>):</div>
             <div class="subsection-title">Listar todos os nós no cluster:</div>
             <div class="command-block">
                 <code>kubectl get nodes</code>
@@ -163,7 +182,7 @@
         </div>
 
         <div class="content-section">
-            <div class="section-title">4. Escalonamento e Atualização:</div>
+            <div class="section-title">5. Escalonamento e Atualização:</div>
             <div class="subsection-title">Escalar um deployment:</div>
             <div class="command-block">
                 <code>kubectl scale deployment/&lt;nome_do_deployment&gt; --replicas=&lt;numero_de_replicas&gt; -n &lt;nome_do_namespace&gt;</code>
@@ -179,8 +198,8 @@
             </div>
         </div>
 
-        <div class="content-section">
-            <div class="section-title">5. Limpeza (Excluindo Recursos):</div>
+        <div class="content-section" style="margin-bottom: 2.5rem;">
+            <div class="section-title">6. Limpeza (Excluindo Recursos):</div>
             <div class="subsection-title">Excluir um deployment:</div>
             <div class="command-block">
                 <code>kubectl delete deployment/&lt;nome_do_deployment&gt; -n &lt;nome_do_namespace&gt;</code>
@@ -197,13 +216,16 @@
         </div>
         <div class="content-section">
              <div class="section-title">Observações Importantes:</div>
+             <div class="container-padding">
              <ul>
                 <li><strong>Substitua os placeholders:</strong> Lembre-se de substituir os valores entre <code>&lt;&gt;</code> pelos seus valores reais.</li>
                 <li><strong>Região da AWS:</strong> Sempre especifique a região correta da AWS usando a opção <code>--region</code>.</li>
                 <li><strong><code>kubectl</code> configurado:</strong> A maioria dos comandos de interação com workloads requer que o <code>kubectl</code> esteja configurado corretamente.</li>
                 <li><strong>Permissões:</strong> Certifique-se de que suas credenciais da AWS e a configuração do IAM forneçam as permissões necessárias.</li>
+                 <li><strong>Recursos da AWS:</strong> Ao criar um cluster EKS, você precisará de recursos da AWS como VPC, subnets, e uma role do IAM com as permissões apropriadas.</li>
                 <li><strong>Documentação:</strong> Para informações detalhadas, consulte a <a href="https://aws.amazon.com/cli/" target="_blank">documentação da AWS CLI</a> e a <a href="https://docs.aws.amazon.com/eks/latest/userguide/whatis.html" target="_blank">documentação do Amazon EKS</a>.</li>
             </ul>
+            </div>
         </div>
     </div>
 </body>
