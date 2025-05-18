@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Referência Rápida AWS CLI e EKS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5;
+        }
+        .title-bar {
+            background-color: #0078D4;
+            color: white;
+            padding: 1rem 1.5rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+            border-radius: 8px 8px 0 0;
+        }
+        .content-section {
+            background-color: white;
+            margin-bottom: 1.5rem;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .section-title {
+            background-color: #e6f2ff;
+            color: #005a9e;
+            padding: 0.75rem 1.5rem;
+            font-size: 1.25rem;
+            font-weight: 600;
+            border-bottom: 1px solid #cce0ff;
+        }
+        .subsection-title {
+            color: #333;
+            padding: 0.75rem 1.5rem;
+            font-size: 1.1rem;
+            font-weight: 500;
+            background-color: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .command-block {
+            background-color: #2d2d2d;
+            color: #f0f0f0;
+            padding: 1rem;
+            margin: 0.5rem 1.5rem 1rem 1.5rem;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        .command-block code {
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        .command-comment {
+            color: #9e9e9e;
+            font-style: italic;
+            display: block;
+            margin-top: 0.25rem;
+        }
+        .container-padding {
+            padding: 1.5rem;
+        }
+        @media (max-width: 768px) {
+            .title-bar {
+                font-size: 1.25rem;
+                padding: 0.75rem 1rem;
+            }
+            .section-title {
+                font-size: 1.1rem;
+                padding: 0.6rem 1rem;
+            }
+            .subsection-title {
+                font-size: 1rem;
+                padding: 0.6rem 1rem;
+            }
+            .command-block {
+                padding: 0.75rem;
+                margin: 0.5rem 1rem 1rem 1rem;
+                font-size: 0.85rem;
+            }
+            .container-padding {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container-padding">
+        <div class="title-bar">Referência Rápida AWS CLI e Amazon EKS</div>
+        <div class="content-section">
+            <div class="section-title">1. Configurando seu Ambiente:</div>
+            <div class="subsection-title">Verificar a versão da AWS CLI:</div>
+            <div class="command-block">
+                <code>aws --version</code>
+                <span class="command-comment">Certifique-se de ter a AWS CLI instalada e configurada corretamente.</span>
+            </div>
+            <div class="subsection-title">Configurar as credenciais da AWS:</div>
+            <div class="command-block">
+                <code>aws configure</code>
+                <span class="command-comment">Use este comando para configurar sua chave de acesso, chave secreta, região padrão e formato de saída.</span>
+            </div>
+            <div class="subsection-title">Configurar o <code>kubectl</code>:</div>
+            <div class="command-block">
+                <code>aws eks update-kubeconfig --name &lt;nome_do_seu_cluster&gt; --region &lt;sua_região_aws&gt;</code>
+                <span class="command-comment">Substitua &lt;nome_do_seu_cluster&gt; e &lt;sua_região_aws&gt; pelos valores do seu cluster.</span>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <div class="section-title">2. Informações sobre o Cluster:</div>
+            <div class="subsection-title">Listar seus clusters EKS:</div>
+            <div class="command-block">
+                <code>aws eks list-clusters --region &lt;sua_região_aws&gt;</code>
+                <span class="command-comment">Exibe uma lista dos seus clusters EKS na região especificada.</span>
+            </div>
+            <div class="subsection-title">Descrever um cluster EKS específico:</div>
+            <div class="command-block">
+                <code>aws eks describe-cluster --name &lt;nome_do_seu_cluster&gt; --region &lt;sua_região_aws&gt;</code>
+                <span class="command-comment">Fornece detalhes sobre a configuração do cluster.</span>
+            </div>
+            <div class="subsection-title">Visualizar os grupos de nós gerenciados:</div>
+            <div class="command-block">
+                <code>aws eks list-nodegroups --cluster-name &lt;nome_do_seu_cluster&gt; --region &lt;sua_região_aws&gt;</code>
+                <span class="command-comment">Lista os grupos de nós gerenciados associados ao cluster.</span>
+            </div>
+            <div class="subsection-title">Descrever um grupo de nós gerenciado específico:</div>
+            <div class="command-block">
+                <code>aws eks describe-nodegroup --cluster-name &lt;nome_do_seu_cluster&gt; --nodegroup-name &lt;nome_do_seu_nodegroup&gt; --region &lt;sua_região_aws&gt;</code>
+                <span class="command-comment">Mostra detalhes sobre um grupo de nós específico.</span>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <div class="section-title">3. Interagindo com Workloads (usando <code>kubectl</code>):</div>
+            <div class="subsection-title">Listar todos os nós no cluster:</div>
+            <div class="command-block">
+                <code>kubectl get nodes</code>
+            </div>
+            <div class="subsection-title">Listar todos os pods em todos os namespaces:</div>
+            <div class="command-block">
+                <code>kubectl get pods --all-namespaces</code>
+            </div>
+            <div class="subsection-title">Listar deployments em um namespace específico:</div>
+            <div class="command-block">
+                <code>kubectl get deployments -n &lt;nome_do_namespace&gt;</code>
+                <span class="command-comment">Substitua &lt;nome_do_namespace&gt; pelo namespace desejado.</span>
+            </div>
+            <div class="subsection-title">Visualizar os logs de um pod específico:</div>
+            <div class="command-block">
+                <code>kubectl logs &lt;nome_do_pod&gt; -n &lt;nome_do_namespace&gt;</code>
+            </div>
+            <div class="subsection-title">Executar um comando dentro de um container em um pod:</div>
+            <div class="command-block">
+                <code>kubectl exec -it &lt;nome_do_pod&gt; -n &lt;nome_do_namespace&gt; -- &lt;comando&gt;</code>
+                <span class="command-comment">Exemplo: kubectl exec -it &lt;nome_do_pod&gt; -n &lt;nome_do_namespace&gt; -- bash</span>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <div class="section-title">4. Escalonamento e Atualização:</div>
+            <div class="subsection-title">Escalar um deployment:</div>
+            <div class="command-block">
+                <code>kubectl scale deployment/&lt;nome_do_deployment&gt; --replicas=&lt;numero_de_replicas&gt; -n &lt;nome_do_namespace&gt;</code>
+            </div>
+            <div class="subsection-title">Atualizar a versão do Kubernetes de um cluster:</div>
+            <div class="command-block">
+                <code>aws eks update-cluster-version --name &lt;nome_do_seu_cluster&gt; --kubernetes-version &lt;nova_versao&gt; --region &lt;sua_região_aws&gt;</code>
+                <span class="command-comment">Atualizações devem ser planejadas e executadas com cautela.</span>
+            </div>
+             <div class="subsection-title">Atualizar a versão de um grupo de nós gerenciado:</div>
+            <div class="command-block">
+                <code>aws eks update-nodegroup-version --cluster-name &lt;nome_do_seu_cluster&gt; --nodegroup-name &lt;nome_do_seu_nodegroup&gt; --kubernetes-version &lt;nova_versao&gt; --region &lt;sua_região_aws&gt;</code>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <div class="section-title">5. Limpeza (Excluindo Recursos):</div>
+            <div class="subsection-title">Excluir um deployment:</div>
+            <div class="command-block">
+                <code>kubectl delete deployment/&lt;nome_do_deployment&gt; -n &lt;nome_do_namespace&gt;</code>
+            </div>
+            <div class="subsection-title">Excluir um grupo de nós gerenciado:</div>
+            <div class="command-block">
+                <code>aws eks delete-nodegroup --cluster-name &lt;nome_do_seu_cluster&gt; --nodegroup-name &lt;nome_do_seu_nodegroup&gt; --region &lt;sua_região_aws&gt;</code>
+            </div>
+            <div class="subsection-title">Excluir um cluster EKS:</div>
+            <div class="command-block">
+                <code>aws eks delete-cluster --name &lt;nome_do_seu_cluster&gt; --region &lt;sua_região_aws&gt;</code>
+                <span class="command-comment">Certifique-se de que todos os recursos associados foram removidos primeiro.</span>
+            </div>
+        </div>
+        <div class="content-section">
+             <div class="section-title">Observações Importantes:</div>
+             <ul>
+                <li><strong>Substitua os placeholders:</strong> Lembre-se de substituir os valores entre <code>&lt;&gt;</code> pelos seus valores reais.</li>
+                <li><strong>Região da AWS:</strong> Sempre especifique a região correta da AWS usando a opção <code>--region</code>.</li>
+                <li><strong><code>kubectl</code> configurado:</strong> A maioria dos comandos de interação com workloads requer que o <code>kubectl</code> esteja configurado corretamente.</li>
+                <li><strong>Permissões:</strong> Certifique-se de que suas credenciais da AWS e a configuração do IAM forneçam as permissões necessárias.</li>
+                <li><strong>Documentação:</strong> Para informações detalhadas, consulte a <a href="https://aws.amazon.com/cli/" target="_blank">documentação da AWS CLI</a> e a <a href="https://docs.aws.amazon.com/eks/latest/userguide/whatis.html" target="_blank">documentação do Amazon EKS</a>.</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
