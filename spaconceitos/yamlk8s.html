@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guia de Referência: Manifestos YAML Kubernetes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5; /* Cor de fundo suave */
+        }
+        .title-bar {
+            background-color: #326CE5; /* Azul Kubernetes */
+            color: white;
+            padding: 1rem 1.5rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+            border-radius: 8px 8px 0 0;
+        }
+        .content-section {
+            background-color: white;
+            margin-bottom: 1.5rem;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .section-title {
+            background-color: #e8eaf6; /* Azul claro para títulos de secção (ajustado para tema K8s) */
+            color: #1a237e; /* Azul escuro para texto do título da secção (ajustado) */
+            padding: 0.75rem 1.5rem;
+            font-size: 1.25rem;
+            font-weight: 600;
+            border-bottom: 1px solid #c5cae9; /* Borda subtil (ajustado) */
+        }
+        .subsection-title {
+            color: #333;
+            padding: 0.75rem 1.5rem;
+            font-size: 1.1rem;
+            font-weight: 500;
+            background-color: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .command-block { /* Reutilizado para blocos YAML */
+            background-color: #2d2d2d;
+            color: #f0f0f0;
+            padding: 1rem;
+            margin: 0.5rem 1.5rem 1rem 1.5rem;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', 'Andale Mono', 'Ubuntu Mono', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        .command-block code {
+            white-space: pre; /* Mantém a formatação do YAML */
+            word-break: normal;
+        }
+        .command-comment { /* Reutilizado para comentários no YAML */
+            color: #9e9e9e;
+            font-style: italic;
+        }
+        .yaml-key {
+            color: #9cdcfe; /* Azul claro para chaves YAML */
+        }
+        .yaml-value {
+            color: #ce9178; /* Laranja/marrom para valores YAML */
+        }
+        .yaml-string {
+            color: #ce9178;
+        }
+        .yaml-number {
+            color: #b5cea8; /* Verde claro para números */
+        }
+        .yaml-boolean {
+            color: #569cd6; /* Azul para booleanos */
+        }
+        .container-padding {
+            padding: 1.5rem;
+        }
+        .description-text {
+            padding: 0.75rem 1.5rem;
+            color: #4a5568; /* Cinza escuro para texto descritivo */
+            line-height: 1.6;
+        }
+        .description-text ul {
+            list-style-type: disc;
+            margin-left: 20px;
+            margin-top: 0.5rem;
+        }
+        .description-text li {
+            margin-bottom: 0.25rem;
+        }
+        /* Adaptações para ecrãs pequenos */
+        @media (max-width: 768px) {
+            .title-bar {
+                font-size: 1.25rem;
+                padding: 0.75rem 1rem;
+            }
+            .section-title {
+                font-size: 1.1rem;
+                padding: 0.6rem 1rem;
+            }
+            .subsection-title {
+                font-size: 1rem;
+                padding: 0.6rem 1rem;
+            }
+            .command-block {
+                padding: 0.75rem;
+                margin: 0.5rem 1rem 1rem 1rem;
+                font-size: 0.85rem;
+            }
+            .container-padding {
+                padding: 1rem;
+            }
+            .description-text {
+                padding: 0.5rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto max-w-4xl container-padding">
+        <header class="title-bar">
+            &gt; Guia de Referência: Manifestos YAML Kubernetes
+        </header>
+
+        <section class="content-section">
+            <h2 class="section-title">Entendendo a Lógica e Estrutura YAML</h2>
+            <div class="description-text">
+                <p>YAML (YAML Ain't Markup Language) é um formato de serialização de dados legível por humanos, frequentemente usado para arquivos de configuração. No Kubernetes, os manifestos de recursos são definidos em YAML.</p>
+                <p>Principais conceitos do YAML:</p>
+                <ul>
+                    <li><strong>Pares Chave-Valor (Mapas/Dicionários):</strong> A estrutura fundamental do YAML. Uma chave é seguida por dois pontos e um espaço, e depois o valor.
+                        <br><code><span class="yaml-key">chave:</span> <span class="yaml-string">valor</span></code>
+                    </li>
+                    <li><strong>Listas (Sequências/Arrays):</strong> Itens em uma lista começam com um hífen e um espaço (<code>- </code>). Todos os itens da lista devem ter a mesma indentação.
+                        <br>
+                        <code>
+                        <span class="yaml-key">minhaLista:</span><br>
+                        <span class="yaml-string">- item1</span><br>
+                        <span class="yaml-string">- item2</span>
+                        </code>
+                    </li>
+                    <li><strong>Indentação:</strong> A indentação (espaços, não tabs) é crucial e define a estrutura hierárquica. Elementos aninhados devem ser indentados com mais espaços que o seu elemento pai. A quantidade de espaços por nível de indentação deve ser consistente (geralmente 2 espaços).</li>
+                    <li><strong>Escalares:</strong> São valores simples como strings, números ou booleanos.
+                        <br><code><span class="yaml-key">nome:</span> <span class="yaml-string">"Exemplo"</span> <span class="command-comment"># String (aspas são opcionais para strings simples)</span></code>
+                        <br><code><span class="yaml-key">idade:</span> <span class="yaml-number">30</span></code>
+                        <br><code><span class="yaml-key">ativo:</span> <span class="yaml-boolean">true</span></code>
+                    </li>
+                     <li><strong>Strings Multilinha:</strong> Podem ser definidas usando <code>|</code> (preserva novas linhas) ou <code>&gt;</code> (novas linhas são convertidas em espaços, exceto linhas em branco).
+                        <br>
+                        <code>
+                        <span class="yaml-key">script:</span> <span class="yaml-string">|</span><br>
+                        <span class="yaml-string">&nbsp;&nbsp;echo "Olá"</span><br>
+                        <span class="yaml-string">&nbsp;&nbsp;echo "Mundo"</span>
+                        </code>
+                     </li>
+                    <li><strong>Comentários:</strong> Linhas começando com <code>#</code> são ignoradas.</li>
+                </ul>
+                <p>No Kubernetes, um arquivo YAML normalmente define um ou mais objetos (como um Pod, Deployment, Service, etc.). Cada objeto tem campos obrigatórios como <code>apiVersion</code>, <code>kind</code>, e <code>metadata</code>, além do campo <code>spec</code> que descreve o estado desejado do objeto.</p>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2 class="section-title">Estrutura Básica de um Manifesto YAML Kubernetes</h2>
+            <p class="description-text">
+                Todos os manifestos de recursos do Kubernetes compartilham uma estrutura comum com os seguintes campos principais:
+            </p>
+            <div class="p-4">
+                <div class="command-block">
+<code><span class="yaml-key">apiVersion:</span> <span class="yaml-string">v1</span> <span class="command-comment"># Versão da API para o tipo de objeto</span>
+<span class="yaml-key">kind:</span> <span class="yaml-string">Pod</span> <span class="command-comment"># Tipo de objeto (ex: Pod, Deployment, Service)</span>
+<span class="yaml-key">metadata:</span> <span class="command-comment"># Dados que ajudam a identificar unicamente o objeto</span>
+  <span class="yaml-key">name:</span> <span class="yaml-string">meu-pod-exemplo</span>
+  <span class="yaml-key">labels:</span>
+    <span class="yaml-key">app:</span> <span class="yaml-string">meu-app</span>
+<span class="yaml-key">spec:</span> <span class="command-comment"># Especificação do estado desejado para o objeto</span>
+  <span class="yaml-key">containers:</span>
+  <span class="yaml-key">- name:</span> <span class="yaml-string">meu-container</span>
+    <span class="yaml-key">image:</span> <span class="yaml-string">nginx:latest</span>
+</code>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2 class="section-title">Pod</h2>
+            <p class="description-text">
+                Um Pod é a menor unidade de implantação no Kubernetes. Ele representa um ou mais contêineres que compartilham armazenamento e rede.
+            </p>
+            <div class="p-4">
+                <h3 class="subsection-title">Exemplo de Pod Simples</h3>
+                <div class="command-block">
+<code><span class="yaml-key">apiVersion:</span> <span class="yaml-string">v1</span>
+<span class="yaml-key">kind:</span> <span class="yaml-string">Pod</span>
+<span class="yaml-key">metadata:</span>
+  <span class="yaml-key">name:</span> <span class="yaml-string">nginx-pod</span>
+  <span class="yaml-key">labels:</span>
+    <span class="yaml-key">app:</span> <span class="yaml-string">nginx</span>
+<span class="yaml-key">spec:</span>
+  <span class="yaml-key">containers:</span>
+  <span class="yaml-key">- name:</span> <span class="yaml-string">nginx-container</span>
+    <span class="yaml-key">image:</span> <span class="yaml-string">nginx:1.25</span> <span class="command-comment"># Especificar versão da imagem é uma boa prática</span>
+    <span class="yaml-key">ports:</span>
+    <span class="yaml-key">- containerPort:</span> <span class="yaml-number">80</span>
+</code>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2 class="section-title">Deployment</h2>
+            <p class="description-text">
+                Um Deployment gerencia um conjunto de Pods replicados, garantindo que um número específico de instâncias esteja em execução. Ele também lida com atualizações e rollbacks.
+            </p>
+            <div class="p-4">
+                <h3 class="subsection-title">Exemplo de Deployment</h3>
+                <div class="command-block">
+<code><span class="yaml-key">apiVersion:</span> <span class="yaml-string">apps/v1</span>
+<span class="yaml-key">kind:</span> <span class="yaml-string">Deployment</span>
+<span class="yaml-key">metadata:</span>
+  <span class="yaml-key">name:</span> <span class="yaml-string">meu-app-deployment</span>
+  <span class="yaml-key">labels:</span>
+    <span class="yaml-key">app:</span> <span class="yaml-string">meu-app</span>
+<span class="yaml-key">spec:</span>
+  <span class="yaml-key">replicas:</span> <span class="yaml-number">3</span> <span class="command-comment"># Número desejado de Pods</span>
+  <span class="yaml-key">selector:</span> <span class="command-comment"># Define como o Deployment encontra os Pods para gerenciar</span>
+    <span class="yaml-key">matchLabels:</span>
+      <span class="yaml-key">app:</span> <span class="yaml-string">meu-app</span>
+  <span class="yaml-key">template:</span> <span class="command-comment"># Modelo para criar os Pods</span>
+    <span class="yaml-key">metadata:</span>
+      <span class="yaml-key">labels:</span>
+        <span class="yaml-key">app:</span> <span class="yaml-string">meu-app</span>
+    <span class="yaml-key">spec:</span>
+      <span class="yaml-key">containers:</span>
+      <span class="yaml-key">- name:</span> <span class="yaml-string">meu-app-container</span>
+        <span class="yaml-key">image:</span> <span class="yaml-string">meu-app-imagem:v1.0</span>
+        <span class="yaml-key">ports:</span>
+        <span class="yaml-key">- containerPort:</span> <span class="yaml-number">8080</span>
+</code>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2 class="section-title">ReplicaSet</h2>
+            <p class="description-text">
+                Um ReplicaSet garante que um número especificado de réplicas de Pods esteja em execução em qualquer momento. Deployments são a maneira recomendada de gerenciar ReplicaSets, pois fornecem funcionalidades adicionais como atualizações e rollbacks.
+            </p>
+            <div class="p-4">
+                <h3 class="subsection-title">Exemplo de ReplicaSet</h3>
+                <div class="command-block">
+<code><span class="yaml-key">apiVersion:</span> <span class="yaml-string">apps/v1</span>
+<span class="yaml-key">kind:</span> <span class="yaml-string">ReplicaSet</span>
+<span class="yaml-key">metadata:</span>
+  <span class="yaml-key">name:</span> <span class="yaml-string">meu-app-replicaset</span>
+  <span class="yaml-key">labels:</span>
+    <span class="yaml-key">app:</span> <span class="yaml-string">meu-app</span>
+    <span class="yaml-key">tier:</span> <span class="yaml-string">frontend</span>
+<span class="yaml-key">spec:</span>
+  <span class="yaml-key">replicas:</span> <span class="yaml-number">3</span>
+  <span class="yaml-key">selector:</span>
+    <span class="yaml-key">matchLabels:</span>
+      <span class="yaml-key">tier:</span> <span class="yaml-string">frontend</span>
+  <span class="yaml-key">template:</span>
+    <span class="yaml-key">metadata:</span>
+      <span class="yaml-key">labels:</span>
+        <span class="yaml-key">tier:</span> <span class="yaml-string">frontend</span> <span class="command-comment"># Deve corresponder ao selector.matchLabels</span>
+        <span class="yaml-key">app:</span> <span class="yaml-string">meu-app-rs</span> <span class="command-comment"># Pode ter labels adicionais</span>
+    <span class="yaml-key">spec:</span>
+      <span class="yaml-key">containers:</span>
+      <span class="yaml-key">- name:</span> <span class="yaml-string">meu-app-container-rs</span>
+        <span class="yaml-key">image:</span> <span class="yaml-string">nginx:stable</span>
+        <span class="yaml-key">ports:</span>
+        <span class="yaml-key">- containerPort:</span> <span class="yaml-number">80</span>
+</code>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2 class="section-title">Service</h2>
+            <p class="description-text">
+                Um Service expõe um conjunto de Pods (geralmente gerenciados por um Deployment ou ReplicaSet) como um serviço de rede. Ele fornece um ponto de acesso estável (IP e DNS) para os Pods.
+                Existem principalmente três tipos de Services que você usará com frequência:
+                <ul>
+                    <li class="description-text"><strong>ClusterIP:</strong> (Padrão) Expõe o serviço num IP interno ao cluster. Este tipo torna o serviço alcançável apenas de dentro do cluster.</li>
+                    <li class="description-text"><strong>NodePort:</strong> Expõe o serviço numa porta estática em cada IP de Nó do cluster. Um serviço ClusterIP, para o qual o serviço NodePort encaminha, é automaticamente criado. Você poderá contactar o serviço NodePort de fora do cluster usando <code>&lt;NodeIP&gt;:&lt;NodePort&gt;</code>.</li>
+                    <li class="description-text"><strong>LoadBalancer:</strong> Expõe o serviço externamente usando um balanceador de carga do provedor de nuvem. Serviços NodePort e ClusterIP externos, para os quais o balanceador de carga externo encaminha, são automaticamente criados.</li>
+                </ul>
+            </p>
+            <div class="p-4">
+                <h3 class="subsection-title">Exemplo de Service (ClusterIP)</h3>
+                <div class="command-block">
+<code><span class="yaml-key">apiVersion:</span> <span class="yaml-string">v1</span>
+<span class="yaml-key">kind:</span> <span class="yaml-string">Service</span>
+<span class="yaml-key">metadata:</span>
+  <span class="yaml-key">name:</span> <span class="yaml-string">meu-app-service-clusterip</span>
+<span class="yaml-key">spec:</span>
+  <span class="yaml-key">type:</span> <span class="yaml-string">ClusterIP</span>
+  <span class="yaml-key">selector:</span>
+    <span class="yaml-key">app:</span> <span class="yaml-string">meu-app</span>
+  <span class="yaml-key">ports:</span>
+  <span class="yaml-key">- protocol:</span> <span class="yaml-string">TCP</span>
+    <span class="yaml-key">port:</span> <span class="yaml-number">80</span>
+    <span class="yaml-key">targetPort:</span> <span class="yaml-number">8080</span>
+</code>
+                </div>
+                <h3 class="subsection-title">Exemplo de Service (NodePort)</h3>
+                <div class="command-block">
+<code><span class="yaml-key">apiVersion:</span> <span class="yaml-string">v1</span>
+<span class="yaml-key">kind:</span> <span class="yaml-string">Service</span>
+<span class="yaml-key">metadata:</span>
+  <span class="yaml-key">name:</span> <span class="yaml-string">meu-app-service-nodeport</span>
+<span class="yaml-key">spec:</span>
+  <span class="yaml-key">type:</span> <span class="yaml-string">NodePort</span>
+  <span class="yaml-key">selector:</span>
+    <span class="yaml-key">app:</span> <span class="yaml-string">meu-app</span>
+  <span class="yaml-key">ports:</span>
+  <span class="yaml-key">- protocol:</span> <span class="yaml-string">TCP</span>
+    <span class="yaml-key">port:</span> <span class="yaml-number">80</span> <span class="command-comment"># Porta exposta pelo serviço (ClusterIP)</span>
+    <span class="yaml-key">targetPort:</span> <span class="yaml-number">8080</span> <span class="command-comment"># Porta nos Pods</span>
+    <span class="yaml-key">nodePort:</span> <span class="yaml-number">30007</span> <span class="command-comment"># Porta estática nos Nós (geralmente entre 30000-32767). Se não especificada, uma será alocada.</span>
+</code>
+                </div>
+                <h3 class="subsection-title">Exemplo de Service (LoadBalancer)</h3>
+                 <p class="description-text">
+                    Expõe o serviço externamente usando um balanceador de carga do provedor de nuvem.
+                </p>
+                <div class="command-block">
+<code><span class="yaml-key">apiVersion:</span> <span class="yaml-string">v1</span>
+<span class="yaml-key">kind:</span> <span class="yaml-string">Service</span>
+<span class="yaml-key">metadata:</span>
+  <span class="yaml-key">name:</span> <span class="yaml-string">meu-app-loadbalancer</span>
+<span class="yaml-key">spec:</span>
+  <span class="yaml-key">type:</span> <span class="yaml-string">LoadBalancer</span>
+  <span class="yaml-key">selector:</span>
+    <span class="yaml-key">app:</span> <span class="yaml-string">meu-app</span>
+  <span class="yaml-key">ports:</span>
+  <span class="yaml-key">- protocol:</span> <span class="yaml-string">TCP</span>
+    <span class="yaml-key">port:</span> <span class="yaml-number">80</span>
+    <span class="yaml-key">targetPort:</span> <span class="yaml-number">8080</span>
+</code>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2 class="section-title">Ingress</h2>
+            <p class="description-text">
+                Um Ingress gerencia o acesso externo aos serviços num cluster, tipicamente HTTP e HTTPS. Ele pode fornecer balanceamento de carga, terminação SSL e roteamento baseado em nome de host ou caminho. Requer um controlador Ingress para funcionar (ex: NGINX Ingress Controller, Traefik).
+            </p>
+            <div class="p-4">
+                <h3 class="subsection-title">Exemplo de Ingress</h3>
+                <div class="command-block">
+<code><span class="yaml-key">apiVersion:</span> <span class="yaml-string">networking.k8s.io/v1</span>
+<span class="yaml-key">kind:</span> <span class="yaml-string">Ingress</span>
+<span class="yaml-key">metadata:</span>
+  <span class="yaml-key">name:</span> <span class="yaml-string">meu-app-ingress</span>
+  <span class="yaml-key">annotations:</span> <span class="command-comment"># Anotações específicas do controlador Ingress</span>
+    <span class="yaml-key">nginx.ingress.kubernetes.io/rewrite-target:</span> <span class="yaml-string">/</span>
+    <span class="yaml-key">kubernetes.io/ingress.class:</span> <span class="yaml-string">"nginx"</span> <span class="command-comment"># Especifica qual controlador Ingress usar</span>
+<span class="yaml-key">spec:</span>
+  <span class="yaml-key">rules:</span>
+  <span class="yaml-key">- host:</span> <span class="yaml-string">meuapp.exemplo.com</span>
+    <span class="yaml-key">http:</span>
+      <span class="yaml-key">paths:</span>
+      <span class="yaml-key">- path:</span> <span class="yaml-string">/</span>
+        <span class="yaml-key">pathType:</span> <span class="yaml-string">Prefix</span> <span class="command-comment"># Tipos: Prefix, Exact, ImplementationSpecific</span>
+        <span class="yaml-key">backend:</span>
+          <span class="yaml-key">service:</span>
+            <span class="yaml-key">name:</span> <span class="yaml-string">meu-app-service-clusterip</span> <span class="command-comment"># Nome do Service que o Ingress irá expor</span>
+            <span class="yaml-key">port:</span>
+              <span class="yaml-key">number:</span> <span class="yaml-number">80</span>
+  <span class="command-comment"># Exemplo de terminação TLS (HTTPS)</span>
+  <span class="yaml-key">tls:</span>
+  <span class="yaml-key">- hosts:</span>
+    <span class="yaml-key">- meuapp.exemplo.com</span>
+    <span class="yaml-key">secretName:</span> <span class="yaml-string">meuapp-tls-secret</span> <span class="command-comment"># Secret contendo o certificado TLS e a chave privada</span>
+</code>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2 class="section-title">Namespace</h2>
+            <p class="description-text">
+                Namespaces fornecem uma maneira de dividir os recursos do cluster em múltiplos ambientes virtuais isolados.
+            </p>
+            <div class="p-4">
+                <h3 class="subsection-title">Exemplo de Namespace</h3>
+                <div class="command-block">
+<code><span class="yaml-key">apiVersion:</span> <span class="yaml-string">v1</span>
+<span class="yaml-key">kind:</span> <span class="yaml-string">Namespace</span>
+<span class="yaml-key">metadata:</span>
+  <span class="yaml-key">name:</span> <span class="yaml-string">meu-namespace-desenvolvimento</span>
+</code>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2 class="section-title">ConfigMap</h2>
+            <p class="description-text">
+                ConfigMaps são usados para armazenar dados de configuração não sensíveis em pares chave-valor. Os Pods podem consumir ConfigMaps como variáveis de ambiente, argumentos de linha de comando ou arquivos de configuração em um volume.
+            </p>
+            <div class="p-4">
+                <h3 class="subsection-title">Exemplo de ConfigMap</h3>
+                <div class="command-block">
+<code><span class="yaml-key">apiVersion:</span> <span class="yaml-string">v1</span>
+<span class="yaml-key">kind:</span> <span class="yaml-string">ConfigMap</span>
+<span class="yaml-key">metadata:</span>
+  <span class="yaml-key">name:</span> <span class="yaml-string">meu-app-config</span>
+  <span class="yaml-key">namespace:</span> <span class="yaml-string">meu-namespace-desenvolvimento</span> <span class="command-comment"># Opcional, se não for 'default'</span>
+<span class="yaml-key">data:</span>
+  <span class="command-comment"># Pares chave-valor simples</span>
+  <span class="yaml-key">database.host:</span> <span class="yaml-string">mysql.example.com</span>
+  <span class="yaml-key">api.url:</span> <span class="yaml-string">https://api.example.com/v1</span>
+
+  <span class="command-comment"># Conteúdo de arquivo</span>
+  <span class="yaml-key">config.properties:</span> <span class="yaml-string">|</span>
+    <span class="yaml-string">property1=valor1</span>
+    <span class="yaml-string">property2=valor2</span>
+  <span class="yaml-key">ui.properties:</span> <span class="yaml-string">|</span>
+    <span class="yaml-string">color.background=blue</span>
+    <span class="yaml-string">color.foreground=white</span>
+</code>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2 class="section-title">Secret</h2>
+            <p class="description-text">
+                Secrets são usados para armazenar informações sensíveis, como senhas, tokens OAuth e chaves SSH. Os dados são armazenados em base64.
+            </p>
+            <div class="p-4">
+                <h3 class="subsection-title">Exemplo de Secret (Tipo Opaque)</h3>
+                <div class="command-block">
+<code><span class="yaml-key">apiVersion:</span> <span class="yaml-string">v1</span>
+<span class="yaml-key">kind:</span> <span class="yaml-string">Secret</span>
+<span class="yaml-key">metadata:</span>
+  <span class="yaml-key">name:</span> <span class="yaml-string">minha-db-secret</span>
+<span class="yaml-key">type:</span> <span class="yaml-string">Opaque</span> <span class="command-comment"># Tipo padrão para dados arbitrários definidos pelo usuário</span>
+<span class="yaml-key">data:</span>
+  <span class="command-comment"># Os valores devem ser codificados em base64</span>
+  <span class="command-comment"># echo -n 'minhasenha123' | base64  -> bWluaGFzZW5oYTEyMw==</span>
+  <span class="command-comment"># echo -n 'admin' | base64 -> YWRtaW4=</span>
+  <span class="yaml-key">username:</span> <span class="yaml-string">YWRtaW4=</span>
+  <span class="yaml-key">password:</span> <span class="yaml-string">bWluaGFzZW5oYTEyMw==</span>
+</code>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2 class="section-title">StatefulSet</h2>
+            <p class="description-text">
+                StatefulSets são usados para gerenciar aplicações com estado, fornecendo garantias sobre a ordenação e unicidade dos Pods. Cada Pod num StatefulSet obtém uma identidade persistente e estável (ex: nome de host ordinal) e armazenamento persistente estável.
+            </p>
+            <div class="p-4">
+                <h3 class="subsection-title">Exemplo de StatefulSet</h3>
+                <div class="command-block">
+<code><span class="yaml-key">apiVersion:</span> <span class="yaml-string">apps/v1</span>
+<span class="yaml-key">kind:</span> <span class="yaml-string">StatefulSet</span>
+<span class="yaml-key">metadata:</span>
+  <span class="yaml-key">name:</span> <span class="yaml-string">meu-db-statefulset</span>
+<span class="yaml-key">spec:</span>
+  <span class="yaml-key">serviceName:</span> <span class="yaml-string">"meu-db-headless-service"</span> <span class="command-comment"># Nome do Headless Service para controlar o domínio de rede dos Pods</span>
+  <span class="yaml-key">replicas:</span> <span class="yaml-number">3</span>
+  <span class="yaml-key">selector:</span>
+    <span class="yaml-key">matchLabels:</span>
+      <span class="yaml-key">app:</span> <span class="yaml-string">meu-db</span>
+  <span class="yaml-key">template:</span>
+    <span class="yaml-key">metadata:</span>
+      <span class="yaml-key">labels:</span>
+        <span class="yaml-key">app:</span> <span class="yaml-string">meu-db</span>
+    <span class="yaml-key">spec:</span>
+      <span class="yaml-key">terminationGracePeriodSeconds:</span> <span class="yaml-number">10</span>
+      <span class="yaml-key">containers:</span>
+      <span class="yaml-key">- name:</span> <span class="yaml-string">meu-db-container</span>
+        <span class="yaml-key">image:</span> <span class="yaml-string">meu-banco-de-dados:latest</span>
+        <span class="yaml-key">ports:</span>
+        <span class="yaml-key">- containerPort:</span> <span class="yaml-number">5432</span>
+          <span class="yaml-key">name:</span> <span class="yaml-string">db-port</span>
+        <span class="yaml-key">volumeMounts:</span>
+        <span class="yaml-key">- name:</span> <span class="yaml-string">dados-db</span>
+          <span class="yaml-key">mountPath:</span> <span class="yaml-string">/var/lib/database</span>
+  <span class="yaml-key">volumeClaimTemplates:</span> <span class="command-comment"># Define como criar PersistentVolumeClaims para cada Pod</span>
+  <span class="yaml-key">- metadata:</span>
+      <span class="yaml-key">name:</span> <span class="yaml-string">dados-db</span>
+    <span class="yaml-key">spec:</span>
+      <span class="yaml-key">accessModes:</span> <span class="yaml-key">[ "ReadWriteOnce" ]</span> <span class="command-comment"># O volume pode ser montado como leitura-escrita por um único nó</span>
+      <span class="yaml-key">storageClassName:</span> <span class="yaml-string">"minha-storage-class-rapida"</span> <span class="command-comment"># Nome da StorageClass para provisionar o volume</span>
+      <span class="yaml-key">resources:</span>
+        <span class="yaml-key">requests:</span>
+          <span class="yaml-key">storage:</span> <span class="yaml-string">1Gi</span>
+</code>
+                </div>
+                 <p class="description-text">
+                    Nota: Um StatefulSet geralmente requer um "Headless Service" (um Service com `clusterIP: None`) para fornecer identidades de rede únicas para cada Pod.
+                </p>
+                 <div class="command-block">
+<code><span class="yaml-key">apiVersion:</span> <span class="yaml-string">v1</span>
+<span class="yaml-key">kind:</span> <span class="yaml-string">Service</span>
+<span class="yaml-key">metadata:</span>
+  <span class="yaml-key">name:</span> <span class="yaml-string">meu-db-headless-service</span>
+  <span class="yaml-key">labels:</span>
+    <span class="yaml-key">app:</span> <span class="yaml-string">meu-db</span>
+<span class="yaml-key">spec:</span>
+  <span class="yaml-key">ports:</span>
+  <span class="yaml-key">- port:</span> <span class="yaml-number">5432</span>
+    <span class="yaml-key">name:</span> <span class="yaml-string">db-port</span>
+  <span class="yaml-key">clusterIP:</span> <span class="yaml-string">None</span> <span class="command-comment"># Define o serviço como Headless</span>
+  <span class="yaml-key">selector:</span>
+    <span class="yaml-key">app:</span> <span class="yaml-string">meu-db</span>
+</code>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2 class="section-title">PersistentVolume (PV)</h2>
+            <p class="description-text">
+                Um PersistentVolume (PV) é uma parte do armazenamento no cluster que foi provisionada por um administrador ou dinamicamente provisionada usando StorageClasses. É um recurso no cluster, assim como um nó é um recurso do cluster. PVs são plugins de volume como Volumes, mas têm um ciclo de vida independente de qualquer Pod individual que usa o PV.
+            </p>
+            <div class="p-4">
+                <h3 class="subsection-title">Exemplo de PersistentVolume (NFS)</h3>
+                <div class="command-block">
+<code><span class="yaml-key">apiVersion:</span> <span class="yaml-string">v1</span>
+<span class="yaml-key">kind:</span> <span class="yaml-string">PersistentVolume</span>
+<span class="yaml-key">metadata:</span>
+  <span class="yaml-key">name:</span> <span class="yaml-string">meu-pv-nfs</span>
+<span class="yaml-key">spec:</span>
+  <span class="yaml-key">capacity:</span>
+    <span class="yaml-key">storage:</span> <span class="yaml-string">5Gi</span> <span class="command-comment"># Capacidade total do volume</span>
+  <span class="yaml-key">volumeMode:</span> <span class="yaml-string">Filesystem</span> <span class="command-comment"># Pode ser Filesystem ou Block</span>
+  <span class="yaml-key">accessModes:</span>
+    <span class="yaml-key">- ReadWriteOnce</span> <span class="command-comment"># ReadWriteOnce, ReadOnlyMany, ReadWriteMany, ReadWriteOncePod</span>
+  <span class="yaml-key">persistentVolumeReclaimPolicy:</span> <span class="yaml-string">Retain</span> <span class="command-comment"># Retain, Recycle, Delete</span>
+  <span class="yaml-key">storageClassName:</span> <span class="yaml-string">"manual-nfs"</span> <span class="command-comment"># Para vincular a PVCs que solicitam esta classe</span>
+  <span class="yaml-key">nfs:</span> <span class="command-comment"># Exemplo de tipo de volume, pode ser hostPath, awsElasticBlockStore, etc.</span>
+    <span class="yaml-key">path:</span> <span class="yaml-string">/mnt/nfs_share/meu-volume</span>
+    <span class="yaml-key">server:</span> <span class="yaml-string">nfs-server.example.com</span>
+</code>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2 class="section-title">PersistentVolumeClaim (PVC)</h2>
+            <p class="description-text">
+                Um PersistentVolumeClaim (PVC) é uma solicitação de armazenamento por um usuário. É semelhante a um Pod. Pods consomem recursos de nó e PVCs consomem recursos de PV. Pods podem solicitar níveis específicos de recursos (CPU e Memória). Claims podem solicitar tamanho e modos de acesso específicos (ex: podem ser montados uma vez como leitura/escrita ou muitas vezes como somente leitura).
+            </p>
+            <div class="p-4">
+                <h3 class="subsection-title">Exemplo de PersistentVolumeClaim</h3>
+                <div class="command-block">
+<code><span class="yaml-key">apiVersion:</span> <span class="yaml-string">v1</span>
+<span class="yaml-key">kind:</span> <span class="yaml-string">PersistentVolumeClaim</span>
+<span class="yaml-key">metadata:</span>
+  <span class="yaml-key">name:</span> <span class="yaml-string">meu-pvc</span>
+<span class="yaml-key">spec:</span>
+  <span class="yaml-key">storageClassName:</span> <span class="yaml-string">"manual-nfs"</span> <span class="command-comment"># Deve corresponder ao storageClassName do PV ou de uma StorageClass para provisionamento dinâmico</span>
+  <span class="yaml-key">accessModes:</span>
+    <span class="yaml-key">- ReadWriteOnce</span>
+  <span class="yaml-key">resources:</span>
+    <span class="yaml-key">requests:</span>
+      <span class="yaml-key">storage:</span> <span class="yaml-string">3Gi</span> <span class="command-comment"># Solicita 3Gi de armazenamento</span>
+</code>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2 class="section-title">StorageClass</h2>
+            <p class="description-text">
+                Uma StorageClass fornece uma maneira para os administradores descreverem as "classes" de armazenamento que oferecem. Diferentes classes podem mapear para níveis de qualidade de serviço, ou para políticas de backup, ou para políticas arbitrárias determinadas pelo administrador do cluster. StorageClasses permitem o provisionamento dinâmico de PersistentVolumes quando um PersistentVolumeClaim é criado.
+            </p>
+            <div class="p-4">
+                <h3 class="subsection-title">Exemplo de StorageClass (AWS EBS)</h3>
+                <div class="command-block">
+<code><span class="yaml-key">apiVersion:</span> <span class="yaml-string">storage.k8s.io/v1</span>
+<span class="yaml-key">kind:</span> <span class="yaml-string">StorageClass</span>
+<span class="yaml-key">metadata:</span>
+  <span class="yaml-key">name:</span> <span class="yaml-string">minha-storage-class-rapida</span> <span class="command-comment"># Nome da StorageClass</span>
+<span class="yaml-key">provisioner:</span> <span class="yaml-string">kubernetes.io/aws-ebs</span> <span class="command-comment"># Provisionador específico da nuvem ou do sistema de armazenamento</span>
+<span class="yaml-key">parameters:</span>
+  <span class="yaml-key">type:</span> <span class="yaml-string">gp2</span> <span class="command-comment"># Parâmetros específicos do provisionador (ex: tipo de disco SSD para AWS)</span>
+  <span class="yaml-key">fsType:</span> <span class="yaml-string">ext4</span>
+<span class="yaml-key">reclaimPolicy:</span> <span class="yaml-string">Delete</span> <span class="command-comment"># Delete ou Retain. O que acontece com o PV quando o PVC é excluído.</span>
+<span class="yaml-key">allowVolumeExpansion:</span> <span class="yaml-boolean">true</span> <span class="command-comment"># Permite a expansão do volume se o provisionador suportar</span>
+<span class="yaml-key">mountOptions:</span>
+  <span class="yaml-key">- debug</span>
+<span class="yaml-key">volumeBindingMode:</span> <span class="yaml-string">Immediate</span> <span class="command-comment"># Immediate ou WaitForFirstConsumer</span>
+</code>
+                </div>
+            </div>
+        </section>
+
+        <footer class="text-center text-sm text-gray-500 py-8">
+            Guia de Referência: Manifestos YAML Kubernetes &copy; 2024
+        </footer>
+    </div>
+</body>
+</html>
