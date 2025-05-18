@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guia de Referência CLI Azure: AKS & ACR</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5; /* Cor de fundo suave */
+        }
+        .title-bar {
+            background-color: #0078D4; /* Azul Azure */
+            color: white;
+            padding: 1rem 1.5rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+            border-radius: 8px 8px 0 0;
+        }
+        .content-section {
+            background-color: white;
+            margin-bottom: 1.5rem;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .section-title {
+            background-color: #e6f2ff; /* Azul claro para títulos de secção */
+            color: #005a9e; /* Azul escuro para texto do título da secção */
+            padding: 0.75rem 1.5rem;
+            font-size: 1.25rem;
+            font-weight: 600;
+            border-bottom: 1px solid #cce0ff; /* Borda subtil */
+        }
+        .subsection-title {
+            color: #333;
+            padding: 0.75rem 1.5rem;
+            font-size: 1.1rem;
+            font-weight: 500;
+            background-color: #f8f9fa; /* Cinza muito claro para subtítulos */
+            border-top: 1px solid #e9ecef;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .command-block {
+            background-color: #2d2d2d; /* Fundo escuro para blocos de código */
+            color: #f0f0f0; /* Texto claro para blocos de código */
+            padding: 1rem;
+            margin: 0.5rem 1.5rem 1rem 1.5rem;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        .command-block code {
+            white-space: pre-wrap; /* Quebra de linha para comandos longos */
+            word-break: break-all;
+        }
+        .command-comment {
+            color: #9e9e9e; /* Cinza para comentários no código */
+            font-style: italic;
+            display: block;
+            margin-top: 0.25rem;
+        }
+        .container-padding {
+            padding: 1.5rem;
+        }
+        /* Adaptações para ecrãs pequenos */
+        @media (max-width: 768px) {
+            .title-bar {
+                font-size: 1.25rem;
+                padding: 0.75rem 1rem;
+            }
+            .section-title {
+                font-size: 1.1rem;
+                padding: 0.6rem 1rem;
+            }
+            .subsection-title {
+                font-size: 1rem;
+                padding: 0.6rem 1rem;
+            }
+            .command-block {
+                padding: 0.75rem;
+                margin: 0.5rem 1rem 1rem 1rem;
+                font-size: 0.85rem;
+            }
+            .container-padding {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto max-w-4xl container-padding">
+        <header class="title-bar">
+            &gt; Guia de Referência CLI Azure: AKS & ACR
+        </header>
+
+        <section class="content-section">
+            <h2 class="section-title">Login e Conta do Azure (`az login`, `az account`)</h2>
+            <div class="p-4">
+                <h3 class="subsection-title">Autenticação e Gerenciamento de Assinatura</h3>
+
+                <p class="px-6 py-2 text-gray-700"><strong>Fazer Login Interativo:</strong></p>
+                <div class="command-block">
+                    <code>az login</code>
+                    <span class="command-comment">*(Abre o navegador para login)*</span>
+                </div>
+
+                <p class="px-6 py-2 text-gray-700"><strong>Fazer Login com Service Principal (Automação):</strong></p>
+                <div class="command-block">
+                    <code>az login --service-principal -u &lt;APP_ID&gt; -p &lt;SENHA_OU_CERTIFICADO&gt; --tenant &lt;TENANT_ID&gt;</code>
+                </div>
+
+                <p class="px-6 py-2 text-gray-700"><strong>Listar Assinaturas:</strong></p>
+                <div class="command-block">
+                    <code>az account list --output table</code>
+                </div>
+
+                <p class="px-6 py-2 text-gray-700"><strong>Definir Assinatura Ativa:</strong></p>
+                <div class="command-block">
+                    <code>az account set --subscription "&lt;NOME_OU_ID_DA_ASSINATURA&gt;"</code>
+                </div>
+
+                <p class="px-6 py-2 text-gray-700"><strong>Mostrar Assinatura Atual:</strong></p>
+                <div class="command-block">
+                    <code>az account show --output table</code>
+                </div>
+
+                <p class="px-6 py-2 text-gray-700"><strong>Criar Grupo de Recursos:</strong></p>
+                <div class="command-block">
+                    <code>az group create --name &lt;NOME_DO_GRUPO_DE_RECURSOS&gt; --location &lt;LOCALIZACAO&gt;</code>
+                    <span class="command-comment">*(Ex: `eastus`, `brazilsouth`)*</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2 class="section-title">Azure Container Registry (`az acr`)</h2>
+            <div class="p-4">
+                <h3 class="subsection-title">Gerenciar Imagens de Contêiner</h3>
+
+                <p class="px-6 py-2 text-gray-700"><strong>Login no ACR (Requer Docker CLI):</strong></p>
+                <div class="command-block">
+                    <code>az acr login --name &lt;NOME_DO_REGISTRY&gt;</code>
+                </div>
+
+                <p class="px-6 py-2 text-gray-700"><strong>Listar ACRs:</strong></p>
+                <div class="command-block">
+                    <code>az acr list --resource-group &lt;NOME_DO_GRUPO_DE_RECURSOS&gt; --output table</code>
+                </div>
+
+                <p class="px-6 py-2 text-gray-700"><strong>Criar um ACR:</strong></p>
+                <div class="command-block">
+                    <code>az acr create --resource-group &lt;NOME_DO_GRUPO_DE_RECURSOS&gt; --name &lt;NOME_DO_REGISTRY&gt; --sku &lt;SKU&gt;</code>
+                    <span class="command-comment">*(SKUs: `Basic`, `Standard`, `Premium`)*</span>
+                </div>
+
+                <p class="px-6 py-2 text-gray-700"><strong>Mostrar Detalhes do ACR:</strong></p>
+                <div class="command-block">
+                    <code>az acr show --name &lt;NOME_DO_REGISTRY&gt; --resource-group &lt;NOME_DO_GRUPO_DE_RECURSOS&gt;</code>
+                </div>
+
+                <p class="px-6 py-2 text-gray-700"><strong>Listar Repositórios no ACR:</strong></p>
+                <div class="command-block">
+                    <code>az acr repository list --name &lt;NOME_DO_REGISTRY&gt; --output table</code>
+                </div>
+
+                <p class="px-6 py-2 text-gray-700"><strong>Listar Tags de um Repositório:</strong></p>
+                <div class="command-block">
+                    <code>az acr repository show-tags --name &lt;NOME_DO_REGISTRY&gt; --repository &lt;NOME_DO_REPOSITORIO&gt; --output table</code>
+                </div>
+
+                <p class="px-6 py-2 text-gray-700"><strong>Construir Imagem no ACR (ACR Tasks):</strong></p>
+                <div class="command-block">
+                    <code>az acr build --registry &lt;NOME_DO_REGISTRY&gt; --image &lt;NOME_DA_IMAGEM&gt;:&lt;TAG&gt; .</code>
+                    <span class="command-comment">*(Executar do diretório com o Dockerfile)*</span>
+                </div>
+
+                <p class="px-6 py-2 text-gray-700"><strong>Importar Imagem (Ex: do Docker Hub):</strong></p>
+                <div class="command-block">
+                    <code>az acr import --name &lt;NOME_DO_REGISTRY&gt; --source docker.io/library/nginx:latest --image meunginx:latest</code>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2 class="section-title">Azure Kubernetes Service (`az aks`)</h2>
+            <div class="p-4">
+                <h3 class="subsection-title">Gerenciar Clusters Kubernetes</h3>
+
+                <p class="px-6 py-2 text-gray-700"><strong>Obter Credenciais do `kubectl`:</strong></p>
+                <div class="command-block">
+                    <code>az aks get-credentials --resource-group &lt;NOME_DO_GRUPO_DE_RECURSOS&gt; --name &lt;NOME_DO_CLUSTER&gt;</code>
+                </div>
+
+                <p class="px-6 py-2 text-gray-700"><strong>Criar um Cluster AKS:</strong></p>
+                <div class="command-block">
+                    <code>az aks create --resource-group &lt;NOME_DO_GRUPO_DE_RECURSOS&gt; --name &lt;NOME_DO_CLUSTER&gt; --node-count &lt;NUM_NOS&gt; --enable-addons monitoring --generate-ssh-keys</code>
+                </div>
+
+                <p class="px-6 py-2 text-gray-700"><strong>Listar Clusters AKS:</strong></p>
+                <div class="command-block">
+                    <code>az aks list --resource-group &lt;NOME_DO_GRUPO_DE_RECURSOS&gt; --output table</code>
+                </div>
+
+                <p class="px-6 py-2 text-gray-700"><strong>Mostrar Detalhes do Cluster AKS:</strong></p>
+                <div class="command-block">
+                    <code>az aks show --resource-group &lt;NOME_DO_GRUPO_DE_RECURSOS&gt; --name &lt;NOME_DO_CLUSTER&gt;</code>
+                </div>
+
+                <p class="px-6 py-2 text-gray-700"><strong>Escalar Node Pool (Padrão):</strong></p>
+                <div class="command-block">
+                    <code>az aks scale --resource-group &lt;NOME_DO_GRUPO_DE_RECURSOS&gt; --name &lt;NOME_DO_CLUSTER&gt; --node-count &lt;NOVO_NUM_NOS&gt;</code>
+                </div>
+
+                <p class="px-6 py-2 text-gray-700"><strong>Atualizar Versão do Kubernetes:</strong></p>
+                <div class="command-block">
+                    <code># Verificar versões disponíveis</code><br>
+                    <code>az aks get-upgrades --resource-group &lt;NOME_DO_GRUPO_DE_RECURSOS&gt; --name &lt;NOME_DO_CLUSTER&gt; --output table</code><br>
+                    <code># Atualizar</code><br>
+                    <code>az aks upgrade --resource-group &lt;NOME_DO_GRUPO_DE_RECURSOS&gt; --name &lt;NOME_DO_CLUSTER&gt; --kubernetes-version &lt;VERSAO_ALVO&gt;</code>
+                </div>
+
+                <p class="px-6 py-2 text-gray-700"><strong>Anexar ACR ao AKS:</strong></p>
+                <div class="command-block">
+                    <code>az aks update --resource-group &lt;NOME_DO_GRUPO_DE_RECURSOS&gt; --name &lt;NOME_DO_CLUSTER&gt; --attach-acr &lt;NOME_OU_ID_DO_ACR&gt;</code>
+                </div>
+
+                <p class="px-6 py-2 text-gray-700"><strong>Gerenciar Node Pools:</strong></p>
+                <div class="command-block">
+                    <code># Listar</code><br>
+                    <code>az aks nodepool list --cluster-name &lt;NOME_DO_CLUSTER&gt; --resource-group &lt;NOME_DO_GRUPO_DE_RECURSOS&gt;</code><br>
+                    <code># Adicionar</code><br>
+                    <code>az aks nodepool add --cluster-name &lt;NOME_DO_CLUSTER&gt; --resource-group &lt;NOME_DO_GRUPO_DE_RECURSOS&gt; --name &lt;NOME_DO_NODEPOOL&gt; --node-count &lt;NUM_NOS&gt;</code>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2 class="section-title">`kubectl`</h2>
+            <div class="p-4">
+                <h3 class="subsection-title">Implantar e Gerenciar Aplicações no AKS</h3>
+                <p class="px-6 py-1 text-sm text-gray-600 italic">*(Após `az aks get-credentials`)*</p>
+
+                <p class="px-6 py-2 text-gray-700"><strong>Aplicar Configuração (Criar/Atualizar Recursos):</strong></p>
+                <div class="command-block">
+                    <code>kubectl apply -f &lt;seu-manifesto-app.yaml&gt;</code>
+                </div>
+
+                <p class="px-6 py-2 text-gray-700"><strong>Obter Status de Recursos:</strong></p>
+                <div class="command-block">
+                    <code>kubectl get pods -o wide</code><br>
+                    <code>kubectl get deployments</code><br>
+                    <code>kubectl get services</code><br>
+                    <code>kubectl get nodes</code>
+                </div>
+
+                <p class="px-6 py-2 text-gray-700"><strong>Ver Logs de Pods:</strong></p>
+                <div class="command-block">
+                    <code>kubectl logs &lt;NOME_DO_POD&gt;</code><br>
+                    <code>kubectl logs -f &lt;NOME_DO_POD&gt; <span class="command-comment"># Acompanha em tempo real</span></code><br>
+                    <code>kubectl logs &lt;NOME_DO_POD&gt; -c &lt;NOME_DO_CONTAINER&gt; <span class="command-comment"># Para múltiplos contêineres</span></code>
+                </div>
+
+                <p class="px-6 py-2 text-gray-700"><strong>Descrever Recurso (Detalhes e Eventos):</strong></p>
+                <div class="command-block">
+                    <code>kubectl describe pod &lt;NOME_DO_POD&gt;</code><br>
+                    <code>kubectl describe deployment &lt;NOME_DO_DEPLOYMENT&gt;</code>
+                </div>
+
+                <p class="px-6 py-2 text-gray-700"><strong>Executar Comando em um Contêiner:</strong></p>
+                <div class="command-block">
+                    <code>kubectl exec -it &lt;NOME_DO_POD&gt; -- /bin/sh</code>
+                </div>
+
+                <p class="px-6 py-2 text-gray-700"><strong>Redirecionar Porta para um Pod:</strong></p>
+                <div class="command-block">
+                    <code>kubectl port-forward &lt;NOME_DO_POD&gt; &lt;PORTA_LOCAL&gt;:&lt;PORTA_DO_CONTAINER&gt;</code>
+                </div>
+
+                <p class="px-6 py-2 text-gray-700"><strong>Excluir Recursos:</strong></p>
+                <div class="command-block">
+                    <code>kubectl delete -f &lt;seu-manifesto-app.yaml&gt;</code><br>
+                    <code>kubectl delete pod &lt;NOME_DO_POD&gt;</code>
+                </div>
+
+                <p class="px-6 py-2 text-gray-700"><strong>Gerenciamento de Rollout (Deployments):</strong></p>
+                <div class="command-block">
+                    <code>kubectl rollout status deployment/&lt;NOME_DO_DEPLOYMENT&gt;</code><br>
+                    <code>kubectl rollout history deployment/&lt;NOME_DO_DEPLOYMENT&gt;</code><br>
+                    <code>kubectl rollout undo deployment/&lt;NOME_DO_DEPLOYMENT&gt;</code>
+                </div>
+            </div>
+        </section>
+        <footer class="text-center text-sm text-gray-500 py-8">
+            Guia de Referência CLI Azure & kubectl &copy;
+        </footer>
+    </div>
+</body>
+</html>
