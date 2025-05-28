@@ -1,11 +1,11 @@
 AWS:
 
-Exemplo disponível em: https://tonanuvem.github.io/spa/aws/
+Exemplo disponível em: https://tonanuvem.github.io/page/spa/aws/
 
 AZURE:
 
-Exemplo disponível em: https://tonanuvem.github.io/spa/azure/
+Exemplo disponível em: https://tonanuvem.github.io/page/spa/azure/
 
 YAML & K8S:
 
-Exemplo disponível em: https://tonanuvem.github.io/spa/k8s/
+Exemplo disponível em: https://tonanuvem.github.io/page/spa/k8s/
