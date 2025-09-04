@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Hands-On : Prof Andre</title>
+<meta name="viewport" content="width=device-width, initial-scale=1", charset=utf8">
+
+<style>
+body, html {
+  height: 100%;
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.hero-image {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("https://tonanuvem.github.io/page/docs/labimagem.png");
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+}
+
+.hero-text {
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+}
+
+input {
+  width: 100%;
+  font-size: 16px;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  background-color: white;
+  background-image: url('https://icons8.com/icon/12773/search');
+  background-position: 10px 10px; 
+  background-repeat: no-repeat;
+}
+  
+.hero-text button {
+  background-color: #04AA6D;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+.hero-text button:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.container {
+  padding: 16px;
+}
+
+</style>
+
+</head>
+<body>
+
+<div class="hero-image">
+  <div class="hero-text">
+    <h1 style="font-size:50px">LABS HANDS-ON</h1>
+    <p>FIAP | Prof. Andre</p>
+    <br>
+    <div class="container">
+      <input type="text" id="porta" value="80">
+      <button onclick="abrir()">Abrir a Porta definida acima</button>
+      <p id="demo"></p>
+    </div>
+    
+  </div>
+  </div>
+</div>
+
+<script>
+function abrir() {
+  let porta = document.getElementById("porta").value;
+  let host = window.location.hostname; // pega tanto IP quanto DNS
+  let protocolo = window.location.protocol; // mantém http ou https
+  let novaUrl = protocolo + "//" + host + ":" + porta + "/";
+
+  window.open(novaUrl, "_blank"); // abre na mesma aba
+}
+</script>
+
+</body>
+</html>
