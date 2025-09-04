@@ -1,1 +1,1 @@
-docker build -t tonanuvem/fiap_page:blue .
+docker build -t tonanuvem/open .
