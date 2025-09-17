@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Referência Rápida Docker e Docker Compose</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5;
+        }
+        .title-bar {
+            background-color: #0078D4;
+            color: white;
+            padding: 1rem 1.5rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+            border-radius: 8px 8px 0 0;
+        }
+        .content-section {
+            background-color: white;
+            margin-bottom: 1.5rem;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .section-title {
+            background-color: #e6f2ff;
+            color: #005a9e;
+            padding: 0.75rem 1.5rem;
+            font-size: 1.25rem;
+            font-weight: 600;
+            border-bottom: 1px solid #cce0ff;
+        }
+        .subsection-title {
+            color: #333;
+            padding: 0.75rem 1.5rem;
+            font-size: 1.1rem;
+            font-weight: 500;
+            background-color: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .command-block {
+            background-color: #2d2d2d;
+            color: #f0f0f0;
+            padding: 1rem;
+            margin: 0.5rem 1.5rem 1rem 1.5rem;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        .command-block code {
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        .command-comment {
+            color: #9e9e9e;
+            font-style: italic;
+            display: block;
+            margin-top: 0.25rem;
+        }
+        .container-padding {
+            padding: 1.5rem;
+        }
+        @media (max-width: 768px) {
+            .title-bar {
+                font-size: 1.25rem;
+                padding: 0.75rem 1rem;
+            }
+            .section-title {
+                font-size: 1.1rem;
+                padding: 0.6rem 1rem;
+            }
+            .subsection-title {
+                font-size: 1rem;
+                padding: 0.6rem 1rem;
+            }
+            .command-block {
+                padding: 0.75rem;
+                margin: 0.5rem 1rem 1rem 1rem;
+                font-size: 0.85rem;
+            }
+            .container-padding {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto max-w-4xl container-padding">
+        <div class="title-bar">Referência Rápida Docker e Docker Compose</div>
+
+        <!-- Seção de Comandos Básicos do Docker -->
+        <div class="content-section">
+            <div class="section-title">1. Comandos Básicos do Docker</div>
+            <div class="subsection-title">Informações e Versão</div>
+            <div class="command-block">
+                <code>docker version</code>
+                <span class="command-comment">Mostra a versão do Docker instalada.</span>
+            </div>
+            <div class="command-block">
+                <code>docker info</code>
+                <span class="command-comment">Exibe informações detalhadas sobre o ambiente Docker.</span>
+            </div>
+            
+            <div class="subsection-title">Gerenciando Contêineres</div>
+            <div class="command-block">
+                <code>docker run -it --rm --name &lt;nome_do_container&gt; &lt;nome_da_imagem&gt; &lt;comando&gt;</code>
+                <span class="command-comment">Cria e inicia um novo contêiner a partir de uma imagem.</span>
+            </div>
+            <div class="command-block">
+                <code>docker ps -a</code>
+                <span class="command-comment">Lista todos os contêineres, incluindo os que estão parados.</span>
+            </div>
+            <div class="command-block">
+                <code>docker start &lt;container_id_ou_nome&gt;</code>
+                <span class="command-comment">Inicia um contêiner parado.</span>
+            </div>
+            <div class="command-block">
+                <code>docker stop &lt;container_id_ou_nome&gt;</code>
+                <span class="command-comment">Para um contêiner em execução.</span>
+            </div>
+            <div class="command-block">
+                <code>docker restart &lt;container_id_ou_nome&gt;</code>
+                <span class="command-comment">Reinicia um contêiner.</span>
+            </div>
+            <div class="command-block">
+                <code>docker rm &lt;container_id_ou_nome&gt;</code>
+                <span class="command-comment">Remove um contêiner parado.</span>
+            </div>
+            <div class="command-block">
+                <code>docker rm $(docker ps -a -q)</code>
+                <span class="command-comment">Remove todos os contêineres parados.</span>
+            </div>
+            
+            <div class="subsection-title">Gerenciando Imagens</div>
+            <div class="command-block">
+                <code>docker images</code>
+                <span class="command-comment">Lista todas as imagens baixadas localmente.</span>
+            </div>
+            <div class="command-block">
+                <code>docker pull &lt;nome_da_imagem&gt;:&lt;tag&gt;</code>
+                <span class="command-comment">Baixa uma imagem do Docker Hub (ou de outro registro).</span>
+            </div>
+            <div class="command-block">
+                <code>docker build -t &lt;nome_da_imagem&gt; .</code>
+                <span class="command-comment">Constrói uma imagem a partir de um Dockerfile.</span>
+            </div>
+            <div class="command-block">
+                <code>docker rmi &lt;image_id_ou_nome&gt;</code>
+                <span class="command-comment">Remove uma imagem.</span>
+            </div>
+            <div class="command-block">
+                <code>docker rmi $(docker images -a -q)</code>
+                <span class="command-comment">Remove todas as imagens.</span>
+            </div>
+
+            <div class="subsection-title">Logs e Inspeção</div>
+            <div class="command-block">
+                <code>docker logs -f &lt;container_id_ou_nome&gt;</code>
+                <span class="command-comment">Exibe os logs de um contêiner em tempo real.</span>
+            </div>
+            <div class="command-block">
+                <code>docker inspect &lt;container_id_ou_nome&gt;</code>
+                <span class="command-comment">Exibe informações detalhadas (JSON) sobre um contêiner.</span>
+            </div>
+            <div class="command-block">
+                <code>docker exec -it &lt;container_id_ou_nome&gt; bash</code>
+                <span class="command-comment">Executa um comando (ex: bash) dentro de um contêiner em execução.</span>
+            </div>
+        </div>
+
+        <!-- Seção de Comandos do Docker Compose -->
+        <div class="content-section">
+            <div class="section-title">2. Comandos do Docker Compose</div>
+            <div class="subsection-title">Gerenciando Serviços</div>
+            <div class="command-block">
+                <code>docker compose up -d</code>
+                <span class="command-comment">Cria e inicia os serviços definidos no `docker-compose.yml` em segundo plano.</span>
+            </div>
+            <div class="command-block">
+                <code>docker compose down</code>
+                <span class="command-comment">Para e remove contêineres, redes e volumes criados pelo `up`.</span>
+            </div>
+            <div class="command-block">
+                <code>docker compose build</code>
+                <span class="command-comment">Reconstrói as imagens dos serviços.</span>
+            </div>
+            <div class="command-block">
+                <code>docker compose ps</code>
+                <span class="command-comment">Lista os contêineres dos serviços.</span>
+            </div>
+            <div class="command-block">
+                <code>docker compose logs -f</code>
+                <span class="command-comment">Exibe os logs de todos os serviços em tempo real.</span>
+            </div>
+            <div class="command-block">
+                <code>docker compose run &lt;nome_do_serviço&gt; &lt;comando&gt;</code>
+                <span class="command-comment">Executa um comando único em um novo contêiner.</span>
+            </div>
+            <div class="command-block">
+                <code>docker compose stop &lt;nome_do_serviço&gt;</code>
+                <span class="command-comment">Para um serviço específico.</span>
+            </div>
+            <div class="command-block">
+                <code>docker compose start &lt;nome_do_serviço&gt;</code>
+                <span class="command-comment">Inicia um serviço parado.</span>
+            </div>
+        </div>
+
+        <!-- Observações Importantes -->
+        <div class="content-section" style="margin-bottom: 2.5rem;">
+            <div class="section-title">Observações Importantes</div>
+            <div class="container-padding">
+                <ul>
+                    <li><strong>Substitua os placeholders:</strong> Lembre-se de substituir os valores entre <code>&lt;&gt;</code> pelos seus valores reais.</li>
+                    <li><strong><code>docker-compose.yml</code>:</strong> Os comandos do Docker Compose devem ser executados no mesmo diretório onde o arquivo está localizado.</li>
+                    <li><strong>Versão do Docker:</strong> A partir da versão 1.27 do Docker, o comando <code>docker-compose</code> foi integrado ao CLI principal, sendo substituído por <code>docker compose</code>.</li>
+                    <li><strong>Limpeza:</strong> Para liberar espaço, use <code>docker system prune</code> para remover contêineres, redes, imagens e volumes não utilizados.</li>
+                    <li><strong>Documentação:</strong> Para informações detalhadas, consulte a <a href="https://docs.docker.com/" target="_blank">documentação oficial do Docker</a>.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
