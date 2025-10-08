@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Domain Storytelling - IMPORTAÚ LTDA</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            color: #667eea;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            color: #666;
+            margin-top: 10px;
+        }
+
+        .legend {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 40px;
+            padding: 25px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: white;
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .legend-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .legend-icon {
+            font-size: 1.8em;
+        }
+
+        .legend-text {
+            font-size: 0.9em;
+            color: #555;
+        }
+
+        .scenario {
+            margin-bottom: 50px;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid #667eea;
+        }
+
+        .scenario-title {
+            font-size: 1.8em;
+            color: #667eea;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .scenario-number {
+            background: #667eea;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .flow-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 20px;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .flow-table thead {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .flow-table th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.95em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .flow-table tbody tr {
+            background: white;
+            transition: all 0.3s ease;
+        }
+
+        .flow-table tbody tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .flow-table tbody tr:hover {
+            background: #e3f2fd;
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .flow-table td {
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .flow-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .step-number {
+            background: #667eea;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .actor {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .action {
+            color: #27ae60;
+            font-weight: 500;
+        }
+
+        .object {
+            color: #e67e22;
+            font-style: italic;
+        }
+
+        .system {
+            color: #3498db;
+            font-weight: 500;
+        }
+
+        .next-step {
+            color: #9b59b6;
+            font-weight: 500;
+        }
+
+        .result-box {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .flow-arrow {
+            font-size: 1.5em;
+            color: #667eea;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .flow-table {
+                font-size: 0.85em;
+            }
+
+            .flow-table th,
+            .flow-table td {
+                padding: 10px 5px;
+            }
+
+            .legend {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #ffeaa7 0%, #fdcb6e 100%);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Domain Storytelling & DDD</h1>
+            <div class="subtitle">Fluxo de Análise e Decisão - IMPORTAÚ LTDA</div>
+        </header>
+
+        <section class="legend">
+            <div class="legend-item">
+                <span class="legend-icon">👤</span>
+                <span class="legend-text">Ator (Pessoa/Cargo)</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-icon">📦</span>
+                <span class="legend-text">Sistema/Domínio</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-icon">📄</span>
+                <span class="legend-text">Objeto/Dado</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-icon">→</span>
+                <span class="legend-text">Fluxo de Ação</span>
+            </div>
+        </section>
+
+        <div class="scenario">
+            <h2 class="scenario-title">
+                <span class="scenario-number">1</span>
+                Coleta e Correlação de Dados (Analista de Dados)
+            </h2>
+            <table class="flow-table">
+                <thead>
+                    <tr>
+                        <th>Passo</th>
+                        <th>Ator</th>
+                        <th>Ação</th>
+                        <th>Objeto/Dado</th>
+                        <th>Sistema/Domínio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="step-number">1</span></td>
+                        <td class="actor">👤 Analista de Dados</td>
+                        <td class="action">Obtém</td>
+                        <td class="object">📄 Dados Financeiros</td>
+                        <td class="system">📦 Open Finance Itaú & Outros Bancos</td>
+                    </tr>
+                    <tr>
+                        <td><span class="step-number">2</span></td>
+                        <td class="actor">👤 Analista de Dados</td>
+                        <td class="action">Extrai</td>
+                        <td class="object">📄 Pedidos de Compra/Categorias</td>
+                        <td class="system">📦 Microsserviços Internos</td>
+                    </tr>
+                    <tr>
+                        <td><span class="step-number">3</span></td>
+                        <td class="actor">👤 Analista de Dados</td>
+                        <td class="action">Cruza</td>
+                        <td class="object">📄 Pagamento com Pedido</td>
+                        <td class="system">📦 Plataforma de Análise</td>
+                    </tr>
+                    <tr>
+                        <td><span class="step-number">4</span></td>
+                        <td class="actor">👤 Analista de Dados</td>
+                        <td class="action">Executa</td>
+                        <td class="object">📄 Previsão Cambial & Tendências</td>
+                        <td class="system">📦 Motor de ML/IA</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="scenario">
+            <h2 class="scenario-title">
+                <span class="scenario-number">2</span>
+                Decisão Estratégica (Carlos & Márcia)
+            </h2>
+            <table class="flow-table">
+                <thead>
+                    <tr>
+                        <th>Passo</th>
+                        <th>Ator</th>
+                        <th>Ação</th>
+                        <th>Objeto/Dado</th>
+                        <th>Sistema/Domínio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="step-number">5</span></td>
+                        <td class="actor">👤 Carlos (Marketing)</td>
+                        <td class="action">Analisa</td>
+                        <td class="object">📄 Relatório de Tendências</td>
+                        <td class="system">📦 Dashboard de Marketing</td>
+                    </tr>
+                    <tr>
+                        <td><span class="step-number">6</span></td>
+                        <td class="actor">👤 Márcia (CFO)</td>
+                        <td class="action">Avalia</td>
+                        <td class="object">📄 Previsão Cambial/Fluxo de Caixa</td>
+                        <td class="system">📦 Dashboard Financeiro</td>
+                    </tr>
+                    <tr>
+                        <td><span class="step-number">7</span></td>
+                        <td class="actor">👤 Márcia (CFO)</td>
+                        <td class="action">Consulta</td>
+                        <td class="object">📄 Ofertas de Empréstimo PJ</td>
+                        <td class="system">📦 API de Crédito Open Finance</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="scenario">
+            <h2 class="scenario-title">
+                <span class="scenario-number">3</span>
+                Ação Financeira (Márcia)
+            </h2>
+            <table class="flow-table">
+                <thead>
+                    <tr>
+                        <th>Passo</th>
+                        <th>Ator</th>
+                        <th>Ação</th>
+                        <th>Objeto/Dado</th>
+                        <th>Sistema/Domínio</th>
+                        <th>Resultado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="step-number">8</span></td>
+                        <td class="actor">👤 Márcia (CFO)</td>
+                        <td class="action">Inicia</td>
+                        <td class="object">📄 Pagamento Fornecedor</td>
+                        <td class="system">📦 Iniciador de Pagamentos OF</td>
+                        <td><span class="highlight">Otimização do Fluxo de Caixa</span></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="result-box">
+                ✅ Resultado: Otimização do Fluxo de Caixa
+            </div>
+        </div>
+    </div>
+</body>
+</html>
