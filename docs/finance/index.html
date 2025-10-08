@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plataforma de Análise - IMPORTAÚ LTDA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals (Beige, Slate, Soft Amber) -->
+    <!-- Application Structure Plan: The SPA is structured as a role-based interactive dashboard with four distinct views: "Visão Geral do Fluxo," "Dashboard de Marketing (Carlos)," "Dashboard Financeiro (Márcia)," and "Dados para Análises." This structure was chosen to cater to different user needs—process understanding, strategic marketing, financial control, and now, data transparency—all within a unified, easily navigable system. The new 'Dados' view provides the necessary context on the data's origin and structure, supporting the data analyst role. -->
+    <!-- Visualization & Content Choices: The flow process remains an interactive HTML diagram. Marketing and Financial views use Chart.js for visualization. The new 'Dados para Análises' view uses a dynamic HTML table (Goal: Organize/Inform, Method: HTML Table + JS injection, Interaction: None, focus on readability/transparency) to showcase the core data structure used across the dashboards. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF8;
+            color: #384252;
+        }
+        .nav-button {
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-button.active {
+            border-bottom-color: #D97706;
+            color: #D97706;
+        }
+        .flow-step {
+            transition: all 0.3s ease;
+            border: 1px solid #E5E7EB;
+            cursor: pointer;
+        }
+        .flow-step.active {
+            border-color: #D97706;
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+        }
+        .flow-arrow {
+            font-size: 2rem;
+            color: #9CA3AF;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            max-height: 40vh;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div id="app" class="min-h-screen container mx-auto px-4 py-8">
+        
+        <header class="text-center mb-10">
+            <h1 class="text-4xl font-bold text-slate-800">Plataforma de Análise de Comércio Exterior</h1>
+            <p class="text-lg text-slate-600 mt-2">Uma solução Open Finance para a IMPORTAÚ LTDA</p>
+        </header>
+
+        <nav class="flex justify-center border-b border-slate-200 mb-12">
+            <button id="nav-flow" class="nav-button active text-slate-600 hover:text-amber-600 py-4 px-6 text-lg font-medium">Visão Geral do Fluxo</button>
+            <button id="nav-marketing" class="nav-button text-slate-600 hover:text-amber-600 py-4 px-6 text-lg font-medium">Dashboard de Marketing</button>
+            <button id="nav-financial" class="nav-button text-slate-600 hover:text-amber-600 py-4 px-6 text-lg font-medium">Dashboard Financeiro</button>
+            <button id="nav-data" class="nav-button text-slate-600 hover:text-amber-600 py-4 px-6 text-lg font-medium">Dados para Análises</button>
+        </nav>
+
+        <main>
+            <div id="flowView">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-semibold text-slate-700">Fluxo de Gestão e Decisão</h2>
+                    <p class="mt-2 text-slate-500 max-w-3xl mx-auto">Esta é a jornada completa dos dados, desde a coleta via Open Finance até a tomada de decisão estratégica por Carlos (Marketing) e Márcia (CFO). Clique em cada etapa para ver os detalhes.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
+                    <div id="flow-diagram" class="md:col-span-8 space-y-4">
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 items-center">
+                            <div id="step-1" class="flow-step active bg-white p-4 rounded-lg shadow-sm text-center">
+                                <span class="text-sm font-semibold text-amber-700">1. Coleta (Open Finance)</span>
+                                <p class="text-xs mt-1 text-slate-600">Analista de Dados agrega extratos e dados de crédito dos bancos.</p>
+                            </div>
+                            <div class="flow-arrow text-center hidden lg:block">→</div>
+                             <div id="step-2" class="flow-step bg-white p-4 rounded-lg shadow-sm text-center">
+                                <span class="text-sm font-semibold text-amber-700">2. Extração Interna</span>
+                                <p class="text-xs mt-1 text-slate-600">Analista busca Pedidos de Compra e Categorias nos microsserviços.</p>
+                            </div>
+                        </div>
+                        <div class="flex justify-center lg:justify-end">
+                             <div class="flow-arrow transform -rotate-90 lg:rotate-0">↓</div>
+                        </div>
+                         <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 items-center">
+                            <div id="step-4" class="flow-step bg-white p-4 rounded-lg shadow-sm text-center">
+                                <span class="text-sm font-semibold text-amber-700">4. Execução de ML/IA</span>
+                                <p class="text-xs mt-1 text-slate-600">Plataforma gera previsões de câmbio e tendências de produtos.</p>
+                            </div>
+                            <div class="flow-arrow text-center hidden lg:block">←</div>
+                             <div id="step-3" class="flow-step bg-white p-4 rounded-lg shadow-sm text-center">
+                                <span class="text-sm font-semibold text-amber-700">3. Correlação de Dados</span>
+                                <p class="text-xs mt-1 text-slate-600">Plataforma cruza dados financeiros (OF) com dados operacionais (MI).</p>
+                            </div>
+                        </div>
+                         <div class="flex justify-start">
+                             <div class="flow-arrow transform -rotate-90 lg:rotate-180">↓</div>
+                        </div>
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 items-center">
+                             <div id="step-5" class="flow-step bg-white p-4 rounded-lg shadow-sm text-center">
+                                <span class="text-sm font-semibold text-amber-700">5. Análise de Marketing</span>
+                                <p class="text-xs mt-1 text-slate-600">Carlos analisa relatórios de tendências para expansão.</p>
+                            </div>
+                             <div class="flow-arrow text-center hidden lg:block">→</div>
+                            <div id="step-6" class="flow-step bg-white p-4 rounded-lg shadow-sm text-center">
+                                <span class="text-sm font-semibold text-amber-700">6. Análise Financeira</span>
+                                <p class="text-xs mt-1 text-slate-600">Márcia avalia previsão cambial e fluxo de caixa multibanco.</p>
+                            </div>
+                        </div>
+                         <div class="flex justify-center lg:justify-end">
+                             <div class="flow-arrow transform -rotate-90 lg:rotate-0">↓</div>
+                        </div>
+                         <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 items-center">
+                              <div id="step-8" class="flow-step bg-white p-4 rounded-lg shadow-sm text-center">
+                                <span class="text-sm font-semibold text-amber-700">8. Iniciação de Pagamento</span>
+                                <p class="text-xs mt-1 text-slate-600">Márcia paga fornecedores via Open Finance, otimizando o caixa.</p>
+                            </div>
+                            <div class="flow-arrow text-center hidden lg:block">←</div>
+                            <div id="step-7" class="flow-step bg-white p-4 rounded-lg shadow-sm text-center">
+                                <span class="text-sm font-semibold text-amber-700">7. Consulta de Crédito</span>
+                                <p class="text-xs mt-1 text-slate-600">Márcia consulta ofertas de empréstimo personalizadas.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="flow-details" class="md:col-span-4 bg-white p-6 rounded-lg shadow-md border border-slate-200">
+                    </div>
+                </div>
+            </div>
+
+            <div id="marketingView" class="hidden">
+                 <div class="text-center mb-12">
+                    <h2 class="text-3xl font-semibold text-slate-700">Dashboard de Marketing (Carlos)</h2>
+                    <p class="mt-2 text-slate-500 max-w-3xl mx-auto">Esta visão permite a Carlos, Gerente de Marketing, analisar o volume de importações e identificar tendências de mercado para orientar decisões estratégicas e priorizar investimentos.</p>
+                </div>
+                <div class="flex justify-center mb-8">
+                    <div class="bg-white p-2 rounded-lg shadow-sm border border-slate-200">
+                        <label for="timeFilter" class="sr-only">Filtrar período:</label>
+                        <select id="timeFilter" class="border-none rounded-md focus:ring-amber-500">
+                            <option value="6m">Últimos 6 Meses</option>
+                            <option value="12m">Últimos 12 Meses</option>
+                            <option value="pred">Próximo Ano (Previsão)</option>
+                        </select>
+                    </div>
+                </div>
+                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+                    <div class="bg-white p-6 rounded-lg shadow-md border border-slate-200">
+                        <h3 class="text-xl font-semibold text-slate-700 mb-4">Volume de Importação por Categoria</h3>
+                        <div class="chart-container">
+                            <canvas id="importVolumeChart"></canvas>
+                        </div>
+                    </div>
+                     <div class="bg-white p-6 rounded-lg shadow-md border border-slate-200">
+                        <h3 class="text-xl font-semibold text-slate-700 mb-4">Análise Preditiva de Tendências</h3>
+                        <div class="chart-container">
+                            <canvas id="trendsChart"></canvas>
+                        </div>
+                    </div>
+                     <div class="lg:col-span-2 bg-amber-50 border-l-4 border-amber-500 p-6 rounded-r-lg">
+                        <h4 class="font-semibold text-amber-800">Insights Estratégicos</h4>
+                        <p id="marketingInsights" class="mt-2 text-amber-700"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="financialView" class="hidden">
+                 <div class="text-center mb-12">
+                    <h2 class="text-3xl font-semibold text-slate-700">Dashboard Financeiro (Márcia)</h2>
+                    <p class="mt-2 text-slate-500 max-w-3xl mx-auto">Aqui, Márcia, a CFO, gerencia os pagamentos, analisa o fluxo de caixa consolidado dos 3 bancos e avalia oportunidades de crédito para minimizar riscos cambiais e operacionais.</p>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div class="lg:col-span-2 bg-white p-6 rounded-lg shadow-md border border-slate-200">
+                        <h3 class="text-xl font-semibold text-slate-700 mb-4">Previsão Cambial e Fluxo de Caixa Multibanco</h3>
+                        <div class="chart-container" style="height: 400px;">
+                            <canvas id="cashFlowChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="space-y-6">
+                        <div class="bg-white p-6 rounded-lg shadow-md border border-slate-200">
+                            <h3 class="text-xl font-semibold text-slate-700 mb-4">Gestão de Pagamentos</h3>
+                            <p class="text-sm text-slate-600 mb-4">Inicie pagamentos a fornecedores usando o saldo de qualquer conta conectada via Open Finance.</p>
+                            <button class="w-full bg-amber-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-amber-700 transition-colors">
+                                Iniciar Pagamento
+                            </button>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-md border border-slate-200">
+                            <h3 class="text-xl font-semibold text-slate-700 mb-4">Oferta de Crédito</h3>
+                            <p class="text-sm text-slate-600 mb-4">Baseado no seu fluxo de caixa consolidado, há uma oferta de crédito pré-aprovada.</p>
+                             <div class="text-center border border-dashed border-slate-300 p-4 rounded-lg">
+                                <p class="text-sm text-slate-500">Empréstimo de Curto Prazo</p>
+                                <p class="text-2xl font-bold text-green-600 mt-1">R$ 500.000,00</p>
+                                <p class="text-xs text-slate-500">Taxa de 1.2% a.m.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="dataView" class="hidden">
+                 <div class="text-center mb-12">
+                    <h2 class="text-3xl font-semibold text-slate-700">Dados Brutos e Origem da Informação</h2>
+                    <p class="mt-2 text-slate-500 max-w-5xl mx-auto">Esta tabela de amostra ilustra o cruzamento de dados financeiros (Open Finance) e dados operacionais (Microsserviços Internos) para criar a base das análises estratégicas e preditivas da plataforma.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md border border-slate-200 overflow-x-auto">
+                    <table class="min-w-full divide-y divide-slate-200">
+                        <thead class="bg-slate-50">
+                            <tr>
+                                <th class="px-3 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">ID Transação</th>
+                                <th class="px-3 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">ID Pedido</th>
+                                <th class="px-3 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Categoria</th>
+                                <th class="px-3 py-3 text-right text-xs font-medium text-slate-500 uppercase tracking-wider">Valor (R$)</th>
+                                <th class="px-3 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Data</th>
+                                <th class="px-3 py-3 text-right text-xs font-medium text-slate-500 uppercase tracking-wider">Câmbio (USD)</th>
+                                <th class="px-3 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">País Fornecedor</th>
+                                <th class="px-3 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Banco Origem</th>
+                                <th class="px-3 py-3 text-center text-xs font-medium text-slate-500 uppercase tracking-wider">Fonte</th>
+                            </tr>
+                        </thead>
+                        <tbody id="data-table-body" class="bg-white divide-y divide-slate-200">
+                            <!-- Rows will be injected by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            
+            const views = {
+                flow: document.getElementById('flowView'),
+                marketing: document.getElementById('marketingView'),
+                financial: document.getElementById('financialView'),
+                data: document.getElementById('dataView') 
+            };
+
+            const navButtons = {
+                flow: document.getElementById('nav-flow'),
+                marketing: document.getElementById('nav-marketing'),
+                financial: document.getElementById('nav-financial'),
+                data: document.getElementById('nav-data') 
+            };
+
+            const flowSteps = document.querySelectorAll('.flow-step');
+            const flowDetailsContainer = document.getElementById('flow-details');
+            const dataTableBody = document.getElementById('data-table-body');
+            
+            const flowDetailsContent = {
+                'step-1': {
+                    title: '1. Coleta via Open Finance',
+                    description: 'A Analista de Dados utiliza a plataforma para se conectar de forma segura às APIs do Itaú e outros dois bancos. A solução agrega dados transacionais de contas correntes PJ, faturas de cartão de crédito e detalhes de contratos de empréstimo. Este é o alicerce para uma visão financeira unificada.'
+                },
+                'step-2': {
+                    title: '2. Extração de Dados Internos',
+                    description: 'Simultaneamente, a plataforma consome dados dos microsserviços internos da IMPORTAÚ LTDA. São extraídas informações operacionais cruciais como Pedidos de Compra, categorias de produtos, dados de fornecedores e o câmbio negociado na operação de importação.'
+                },
+                'step-3': {
+                    title: '3. Correlação de Dados',
+                    description: 'O motor da plataforma cruza as informações. Um pagamento de R$ 150.000,00 no extrato do Banco A (dado do Open Finance) é vinculado ao Pedido de Compra #1234 para "Componentes Eletrônicos" (dado do microsserviço), enriquecendo o dado financeiro com contexto operacional.'
+                },
+                'step-4': {
+                    title: '4. Execução de Machine Learning',
+                    description: 'Com os dados históricos correlacionados, algoritmos de Machine Learning analisam as séries temporais para prever o crescimento de cada categoria de produto e as flutuações da taxa de câmbio, gerando insights preditivos para as equipes.'
+                },
+                'step-5': {
+                    title: '5. Análise de Marketing (Carlos)',
+                    description: 'Carlos acessa o dashboard e visualiza que a categoria "Equipamentos Médicos" teve um crescimento de 30% nos últimos 6 meses. A análise preditiva sugere uma alta contínua, indicando uma oportunidade clara para expansão de mercado e foco de campanhas.'
+                },
+                 'step-6': {
+                    title: '6. Análise Financeira (Márcia)',
+                    description: 'Márcia observa no seu dashboard a previsão de alta do dólar para o próximo trimestre e o saldo consolidado das três contas. Ela pode simular o impacto cambial nos pagamentos futuros e planejar o fluxo de caixa de forma proativa.'
+                },
+                'step-7': {
+                    title: '7. Consulta de Crédito',
+                    description: 'A plataforma, com a visão completa do faturamento da empresa (dados dos 3 bancos), apresenta a Márcia uma oferta de empréstimo para capital de giro com taxas mais competitivas do que as que ela teria acesso analisando cada banco isoladamente.'
+                },
+                'step-8': {
+                    title: '8. Iniciação de Pagamento',
+                    description: 'Para pagar um fornecedor na Europa, Márcia utiliza o iniciador de pagamentos da plataforma. Ela escolhe debitar o valor da conta do Banco B, que possui o melhor saldo no dia, sem precisar sair do ambiente da plataforma, otimizando a operação.'
+                }
+            };
+
+            const sampleData = [
+                { id_trx: 'TRX10923', id_pedido: 'PC00551', categoria: 'Equipamentos Médicos', valor: 125000.00, data: '2025-05-15', cambio: 5.25, pais: 'Alemanha', banco: 'Itaú (CC)', fonte: 'Open Finance/MI' },
+                { id_trx: 'TRX10924', id_pedido: 'PC00552', categoria: 'Componentes Eletrônicos', valor: 85000.00, data: '2025-05-15', cambio: 5.24, pais: 'China', banco: 'Outro Banco 1 (CC)', fonte: 'Open Finance/MI' },
+                { id_trx: 'TRX10925', id_pedido: 'PC00553', categoria: 'Têxteis', valor: 35000.00, data: '2025-05-16', cambio: 5.25, pais: 'Índia', banco: 'Itaú (CC)', fonte: 'Open Finance/MI' },
+                { id_trx: 'TRX10926', id_pedido: 'PC00554', categoria: 'Automotivo', valor: 210000.00, data: '2025-05-17', cambio: 5.23, pais: 'Japão', banco: 'Empréstimo PJ', fonte: 'Open Finance/MI' },
+                { id_trx: 'TRX10927', id_pedido: 'PC00555', categoria: 'Alimentos', valor: 45000.00, data: '2025-05-17', cambio: 5.23, pais: 'Argentina', banco: 'Outro Banco 2 (CC)', fonte: 'Open Finance/MI' },
+                { id_trx: 'TRX10928', id_pedido: 'PC00556', categoria: 'Equipamentos Médicos', valor: 155000.00, data: '2025-05-18', cambio: 5.26, pais: 'EUA', banco: 'Itaú (CC)', fonte: 'Open Finance/MI' },
+                { id_trx: 'TRX10929', id_pedido: 'PC00557', categoria: 'Componentes Eletrônicos', valor: 90000.00, data: '2025-05-18', cambio: 5.26, pais: 'Coreia do Sul', banco: 'Outro Banco 1 (CC)', fonte: 'Open Finance/MI' },
+                { id_trx: 'TRX10930', id_pedido: 'PC00558', categoria: 'Têxteis', valor: 38000.00, data: '2025-05-19', cambio: 5.27, pais: 'Vietnã', banco: 'Itaú (CC)', fonte: 'Open Finance/MI' },
+                { id_trx: 'TRX10931', id_pedido: 'PC00559', categoria: 'Automotivo', valor: 195000.00, data: '2025-05-20', cambio: 5.28, pais: 'Brasil (Export.)', banco: 'Cartão PJ', fonte: 'Open Finance/MI' },
+                { id_trx: 'TRX10932', id_pedido: 'PC00560', categoria: 'Alimentos', valor: 52000.00, data: '2025-05-20', cambio: 5.28, pais: 'Chile', banco: 'Outro Banco 2 (CC)', fonte: 'Open Finance/MI' },
+                { id_trx: 'TRX10933', id_pedido: 'PC00561', categoria: 'Equipamentos Médicos', valor: 140000.00, data: '2025-05-21', cambio: 5.27, pais: 'Alemanha', banco: 'Itaú (CC)', fonte: 'Open Finance/MI' },
+                { id_trx: 'TRX10934', id_pedido: 'PC00562', categoria: 'Componentes Eletrônicos', valor: 105000.00, data: '2025-05-21', cambio: 5.26, pais: 'China', banco: 'Outro Banco 1 (CC)', fonte: 'Open Finance/MI' },
+                { id_trx: 'TRX10935', id_pedido: 'PC00563', categoria: 'Têxteis', valor: 42000.00, data: '2025-05-22', cambio: 5.25, pais: 'Índia', banco: 'Itaú (CC)', fonte: 'Open Finance/MI' },
+                { id_trx: 'TRX10936', id_pedido: 'PC00564', categoria: 'Automotivo', valor: 225000.00, data: '2025-05-22', cambio: 5.24, pais: 'Japão', banco: 'Empréstimo PJ', fonte: 'Open Finance/MI' },
+                { id_trx: 'TRX10937', id_pedido: 'PC00565', categoria: 'Alimentos', valor: 55000.00, data: '2025-05-23', cambio: 5.23, pais: 'Argentina', banco: 'Outro Banco 2 (CC)', fonte: 'Open Finance/MI' },
+                { id_trx: 'TRX10938', id_pedido: 'PC00566', categoria: 'Equipamentos Médicos', valor: 130000.00, data: '2025-05-23', cambio: 5.22, pais: 'EUA', banco: 'Itaú (CC)', fonte: 'Open Finance/MI' },
+                { id_trx: 'TRX10939', id_pedido: 'PC00567', categoria: 'Componentes Eletrônicos', valor: 95000.00, data: '2025-05-24', cambio: 5.21, pais: 'Coreia do Sul', banco: 'Outro Banco 1 (CC)', fonte: 'Open Finance/MI' },
+                { id_trx: 'TRX10940', id_pedido: 'PC00568', categoria: 'Têxteis', valor: 40000.00, data: '2025-05-24', cambio: 5.20, pais: 'Vietnã', banco: 'Itaú (CC)', fonte: 'Open Finance/MI' },
+                { id_trx: 'TRX10941', id_pedido: 'PC00569', categoria: 'Automotivo', valor: 200000.00, data: '2025-05-25', cambio: 5.19, pais: 'Brasil (Export.)', banco: 'Cartão PJ', fonte: 'Open Finance/MI' },
+                { id_trx: 'TRX10942', id_pedido: 'PC00570', categoria: 'Alimentos', valor: 60000.00, data: '2025-05-25', cambio: 5.18, pais: 'Chile', banco: 'Outro Banco 2 (CC)', fonte: 'Open Finance/MI' },
+            ];
+
+            function formatCurrency(value) {
+                return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
+            }
+             function formatNumber(value) {
+                return new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 4 }).format(value);
+            }
+
+            function renderDataTable() {
+                dataTableBody.innerHTML = ''; 
+                sampleData.forEach((item, index) => {
+                    const row = dataTableBody.insertRow();
+                    row.classList.add(index % 2 === 0 ? 'bg-white' : 'bg-slate-50');
+
+                    row.insertCell().innerHTML = `<span class="text-xs font-mono">${item.id_trx}</span>`;
+                    row.insertCell().innerHTML = `<span class="text-xs">${item.id_pedido}</span>`;
+                    row.insertCell().innerHTML = `<span class="text-xs font-medium">${item.categoria}</span>`;
+                    row.insertCell().innerHTML = `<span class="text-xs text-right">${formatCurrency(item.valor)}</span>`;
+                    row.insertCell().innerHTML = `<span class="text-xs">${item.data}</span>`;
+                    row.insertCell().innerHTML = `<span class="text-xs text-right">${formatNumber(item.cambio)}</span>`;
+                    row.insertCell().innerHTML = `<span class="text-xs">${item.pais}</span>`;
+                    row.insertCell().innerHTML = `<span class="text-xs">${item.banco}</span>`;
+                    
+                    const sourceCell = row.insertCell();
+                    const isOF = item.fonte.includes('Open Finance');
+                    const sourceClass = isOF ? 'bg-sky-100 text-sky-800' : 'bg-indigo-100 text-indigo-800';
+                    sourceCell.innerHTML = `<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${sourceClass}">${item.fonte}</span>`;
+                    sourceCell.classList.add('text-center');
+                });
+            }
+
+
+            function showView(viewName) {
+                Object.values(views).forEach(view => view.classList.add('hidden'));
+                Object.values(navButtons).forEach(button => button.classList.remove('active'));
+                
+                views[viewName].classList.remove('hidden');
+                navButtons[viewName].classList.add('active');
+
+                if (viewName === 'data') {
+                    renderDataTable();
+                }
+            }
+
+            function updateFlowDetails(stepId) {
+                 flowSteps.forEach(step => step.classList.remove('active'));
+                 document.getElementById(stepId).classList.add('active');
+
+                 const content = flowDetailsContent[stepId];
+                 flowDetailsContainer.innerHTML = `
+                    <h4 class="text-xl font-bold text-slate-800 mb-3">${content.title}</h4>
+                    <p class="text-slate-600 text-sm leading-relaxed">${content.description}</p>
+                 `;
+            }
+
+            navButtons.flow.addEventListener('click', () => showView('flow'));
+            navButtons.marketing.addEventListener('click', () => showView('marketing'));
+            navButtons.financial.addEventListener('click', () => showView('financial'));
+            navButtons.data.addEventListener('click', () => showView('data'));
+
+            flowSteps.forEach(step => {
+                step.addEventListener('click', () => updateFlowDetails(step.id));
+            });
+            
+            updateFlowDetails('step-1');
+
+
+            const marketingData = {
+                '6m': {
+                    labels: ['Eletrônicos', 'Têxteis', 'Automotivo', 'Alimentos', 'Médicos'],
+                    volume: [120, 80, 95, 60, 110],
+                    trends: {
+                        labels: ['M1', 'M2', 'M3', 'M4', 'M5', 'M6'],
+                        datasets: [
+                            { label: 'Eletrônicos', data: [20, 22, 18, 25, 23, 32], tension: 0.4, borderColor: '#3b82f6' },
+                            { label: 'Médicos', data: [15, 17, 19, 21, 25, 28], tension: 0.4, borderColor: '#16a34a' }
+                        ]
+                    },
+                    insights: 'A categoria "Eletrônicos" demonstrou o maior volume, com um pico de crescimento no último mês. "Equipamentos Médicos" apresenta um crescimento constante e robusto, sendo um forte candidato para investimentos.'
+                },
+                '12m': {
+                    labels: ['Eletrônicos', 'Têxteis', 'Automotivo', 'Alimentos', 'Médicos'],
+                    volume: [250, 150, 180, 130, 210],
+                    trends: {
+                         labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+                         datasets: [
+                            { label: 'Eletrônicos', data: [60, 65, 55, 70], tension: 0.4, borderColor: '#3b82f6' },
+                            { label: 'Médicos', data: [40, 50, 55, 65], tension: 0.4, borderColor: '#16a34a' }
+                        ]
+                    },
+                    insights: 'Ao longo do ano, "Eletrônicos" se manteve como a categoria principal, enquanto "Médicos" superou "Automotivo" no segundo semestre, mostrando uma forte tendência de alta para o próximo período.'
+                },
+                'pred': {
+                    labels: ['Eletrônicos', 'Têxteis', 'Automotivo', 'Alimentos', 'Médicos'],
+                    volume: [280, 140, 170, 135, 295],
+                    trends: {
+                         labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+                         datasets: [
+                            { label: 'Eletrônicos (Prev.)', data: [70, 72, 68, 70], tension: 0.4, borderColor: '#3b82f6', borderDash: [5, 5] },
+                            { label: 'Médicos (Prev.)', data: [68, 75, 78, 84], tension: 0.4, borderColor: '#16a34a', borderDash: [5, 5] }
+                        ]
+                    },
+                    insights: 'A previsão para o próximo ano indica que "Equipamentos Médicos" deve se tornar a categoria de maior volume, ultrapassando "Eletrônicos". Recomenda-se focar estratégias de expansão neste setor.'
+                }
+            };
+            
+            const timeFilter = document.getElementById('timeFilter');
+            const marketingInsights = document.getElementById('marketingInsights');
+            let importVolumeChart, trendsChart;
+
+            function createOrUpdateCharts(period) {
+                const data = marketingData[period];
+                marketingInsights.textContent = data.insights;
+
+                if (importVolumeChart) importVolumeChart.destroy();
+                importVolumeChart = new Chart(document.getElementById('importVolumeChart').getContext('2d'), {
+                    type: 'bar',
+                    data: {
+                        labels: data.labels,
+                        datasets: [{
+                            label: 'Volume de Importação (em milhões R$)',
+                            data: data.volume,
+                            backgroundColor: ['#60A5FA', '#FBBF24', '#A78BFA', '#F87171', '#4ADE80'],
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: { y: { beginAtZero: true } }
+                    }
+                });
+
+                if (trendsChart) trendsChart.destroy();
+                trendsChart = new Chart(document.getElementById('trendsChart').getContext('2d'), {
+                    type: 'line',
+                    data: data.trends,
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { position: 'bottom' } },
+                        scales: { y: { beginAtZero: true } }
+                    }
+                });
+            }
+
+            timeFilter.addEventListener('change', (e) => createOrUpdateCharts(e.target.value));
+            createOrUpdateCharts('6m');
+
+            new Chart(document.getElementById('cashFlowChart').getContext('2d'), {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul (Prev.)'],
+                    datasets: [
+                        {
+                            label: 'Câmbio USD (R$)',
+                            data: [5.1, 5.0, 5.2, 5.15, 5.25, 5.3, 5.4],
+                            borderColor: '#EF4444',
+                            yAxisID: 'y1',
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Fluxo Caixa Consolidado (M R$)',
+                            data: [2.5, 2.2, 2.6, 2.3, 2.8, 2.5, 2.1],
+                            borderColor: '#10B981',
+                            yAxisID: 'y',
+                            tension: 0.4,
+                            fill: true,
+                            backgroundColor: 'rgba(16, 185, 129, 0.1)'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                            title: { display: true, text: 'Milhões de R$' }
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            grid: { drawOnChartArea: false },
+                            title: { display: true, text: 'Cotação USD' }
+                        }
+                    },
+                    plugins: {
+                        legend: { position: 'bottom' },
+                        tooltip: { mode: 'index', intersect: false }
+                    },
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                    }
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
