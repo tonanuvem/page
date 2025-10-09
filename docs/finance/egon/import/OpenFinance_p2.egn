@@ -25,19 +25,19 @@
       "waypoints": [
         {
           "original": {
-            "x": 954,
+            "x": 811,
             "y": 496
           },
-          "x": 916,
-          "y": 473
+          "x": 776,
+          "y": 458
         },
         {
           "original": {
             "x": 642,
             "y": 310
           },
-          "x": 674,
-          "y": 329
+          "x": 667,
+          "y": 337
         }
       ],
       "source": "shape_7992",
@@ -137,19 +137,19 @@
       "waypoints": [
         {
           "original": {
-            "x": 954,
+            "x": 811,
             "y": 496
           },
-          "x": 916,
-          "y": 513
+          "x": 773,
+          "y": 527
         },
         {
           "original": {
             "x": 642,
             "y": 633
           },
-          "x": 672,
-          "y": 620
+          "x": 665,
+          "y": 614
         }
       ],
       "source": "shape_7992",
@@ -173,10 +173,10 @@
         },
         {
           "original": {
-            "x": 162,
+            "x": 208,
             "y": 496
           },
-          "x": 205,
+          "x": 251,
           "y": 496
         }
       ],
@@ -276,19 +276,19 @@
       "waypoints": [
         {
           "original": {
-            "x": 954,
+            "x": 811,
             "y": 496
           },
-          "x": 916,
-          "y": 489
+          "x": 773,
+          "y": 482
         },
         {
           "original": {
             "x": 642,
             "y": 435
           },
-          "x": 685,
-          "y": 443
+          "x": 680,
+          "y": 449
         }
       ],
       "source": "shape_7992",
@@ -297,25 +297,25 @@
     },
     {
       "type": "domainStory:activity",
-      "name": "a partir do",
+      "name": "via",
       "id": "connection_4018",
       "pickedColor": "black",
       "number": null,
       "waypoints": [
         {
           "original": {
-            "x": 732,
-            "y": 153
+            "x": 691,
+            "y": 152
           },
-          "x": 774,
-          "y": 153
+          "x": 734,
+          "y": 152
         },
         {
           "original": {
-            "x": 951,
+            "x": 811,
             "y": 152
           },
-          "x": 916,
+          "x": 773,
           "y": 152
         }
       ],
@@ -340,11 +340,11 @@
         },
         {
           "original": {
-            "x": 162,
-            "y": 310
+            "x": 208,
+            "y": 273
           },
-          "x": 185,
-          "y": 291
+          "x": 231,
+          "y": 254
         }
       ],
       "source": "shape_1290",
@@ -360,19 +360,19 @@
       "waypoints": [
         {
           "original": {
-            "x": 954,
+            "x": 811,
             "y": 496
           },
-          "x": 916,
-          "y": 501
+          "x": 773,
+          "y": 504
         },
         {
           "original": {
             "x": 642,
             "y": 533
           },
-          "x": 680,
-          "y": 528
+          "x": 677,
+          "y": 525
         }
       ],
       "source": "shape_7992",
@@ -409,7 +409,7 @@
     },
     {
       "type": "domainStory:activity",
-      "name": "",
+      "name": "do",
       "id": "connection_4574",
       "pickedColor": "black",
       "number": null,
@@ -419,42 +419,43 @@
             "x": 571,
             "y": 208
           },
-          "x": 603,
-          "y": 197
+          "x": 600,
+          "y": 194
         },
         {
           "original": {
-            "x": 732,
-            "y": 153
+            "x": 691,
+            "y": 152
           },
-          "x": 694,
-          "y": 166
+          "x": 653,
+          "y": 170
         }
       ],
       "source": "shape_7720",
-      "target": "shape_0226"
+      "target": "shape_0226",
+      "multipleNumberAllowed": false
     },
     {
       "type": "domainStory:activity",
-      "name": "a partir do",
+      "name": "do",
       "id": "connection_6650",
       "pickedColor": "black",
       "number": null,
       "waypoints": [
         {
           "original": {
-            "x": 162,
+            "x": 208,
             "y": 496
           },
-          "x": 124,
+          "x": 170,
           "y": 496
         },
         {
           "original": {
-            "x": -68,
+            "x": 78,
             "y": 496
           },
-          "x": -25,
+          "x": 121,
           "y": 496
         }
       ],
@@ -471,19 +472,19 @@
       "waypoints": [
         {
           "original": {
-            "x": 162,
-            "y": 197
+            "x": 208,
+            "y": 152
           },
-          "x": 124,
-          "y": 197
+          "x": 170,
+          "y": 152
         },
         {
           "original": {
-            "x": -68,
-            "y": 197
+            "x": 78,
+            "y": 152
           },
-          "x": -25,
-          "y": 197
+          "x": 121,
+          "y": 152
         }
       ],
       "source": "shape_3963",
@@ -520,7 +521,7 @@
     },
     {
       "type": "domainStory:activity",
-      "name": "",
+      "name": "a partir do",
       "id": "connection_8771",
       "pickedColor": "black",
       "number": null,
@@ -530,20 +531,21 @@
             "x": 571,
             "y": 67
           },
-          "x": 605,
-          "y": 85
+          "x": 601,
+          "y": 88
         },
         {
           "original": {
-            "x": 732,
-            "y": 153
+            "x": 691,
+            "y": 152
           },
-          "x": 694,
-          "y": 133
+          "x": 653,
+          "y": 125
         }
       ],
       "source": "shape_0074",
-      "target": "shape_0226"
+      "target": "shape_0226",
+      "multipleNumberAllowed": false
     },
     {
       "type": "domainStory:activity",
@@ -558,15 +560,15 @@
             "y": 152
           },
           "x": 317,
-          "y": 161
+          "y": 152
         },
         {
           "original": {
-            "x": 162,
-            "y": 197
+            "x": 208,
+            "y": 152
           },
-          "x": 196,
-          "y": 189
+          "x": 251,
+          "y": 152
         }
       ],
       "source": "shape_1290",
@@ -586,15 +588,15 @@
             "y": 152
           },
           "x": 317,
-          "y": 135
+          "y": 125
         },
         {
           "original": {
-            "x": 162,
-            "y": 67
+            "x": 208,
+            "y": 48
           },
-          "x": 198,
-          "y": 83
+          "x": 238,
+          "y": 69
         }
       ],
       "source": "shape_1290",
@@ -610,19 +612,19 @@
       "waypoints": [
         {
           "original": {
-            "x": 162,
-            "y": 67
+            "x": 208,
+            "y": 48
           },
-          "x": 124,
-          "y": 67
+          "x": 170,
+          "y": 48
         },
         {
           "original": {
-            "x": -68,
-            "y": 67
+            "x": 78,
+            "y": 48
           },
-          "x": -25,
-          "y": 67
+          "x": 121,
+          "y": 48
         }
       ],
       "source": "shape_8600",
@@ -638,19 +640,19 @@
       "waypoints": [
         {
           "original": {
-            "x": 162,
-            "y": 310
+            "x": 208,
+            "y": 273
           },
-          "x": 124,
-          "y": 310
+          "x": 170,
+          "y": 273
         },
         {
           "original": {
-            "x": -68,
-            "y": 310
+            "x": 78,
+            "y": 273
           },
-          "x": -25,
-          "y": 310
+          "x": 121,
+          "y": 273
         }
       ],
       "source": "shape_2816",
@@ -661,8 +663,8 @@
       "type": "domainStory:actorSystem",
       "name": "Microsserviços de Fornecedores",
       "id": "shape_0024",
-      "x": -106,
-      "y": 159
+      "x": 40,
+      "y": 114
     },
     {
       "type": "domainStory:workObjectInfo",
@@ -675,15 +677,15 @@
       "type": "domainStory:workObjectDocument",
       "name": "Extrato bancário",
       "id": "shape_0226",
-      "x": 694,
-      "y": 115
+      "x": 653,
+      "y": 114
     },
     {
       "type": "domainStory:actorSystem",
       "name": "Open Finance",
       "id": "shape_0730",
-      "x": 916,
-      "y": 125
+      "x": 773,
+      "y": 114
     },
     {
       "type": "domainStory:actorPerson",
@@ -696,8 +698,8 @@
       "type": "domainStory:workObjectInfo",
       "name": "Produtos",
       "id": "shape_2816",
-      "x": 124,
-      "y": 272
+      "x": 170,
+      "y": 235
     },
     {
       "type": "domainStory:workObjectDocument",
@@ -710,14 +712,14 @@
       "type": "domainStory:workObjectInfo",
       "name": "Fornecedores",
       "id": "shape_3963",
-      "x": 124,
-      "y": 159
+      "x": 170,
+      "y": 114
     },
     {
       "type": "domainStory:workObjectInfo",
       "name": "Taxa de Câmbio (Dólar comercial)",
       "id": "shape_5637",
-      "x": 124,
+      "x": 170,
       "y": 458
     },
     {
@@ -738,7 +740,7 @@
       "type": "domainStory:actorSystem",
       "name": "SISBACEN (PTAX)",
       "id": "shape_7034",
-      "x": -106,
+      "x": 40,
       "y": 458
     },
     {
@@ -759,22 +761,22 @@
       "type": "domainStory:actorSystem",
       "name": "Microsserviço ML para Análiise Preditiva",
       "id": "shape_7992",
-      "x": 916,
+      "x": 773,
       "y": 458
     },
     {
       "type": "domainStory:actorSystem",
       "name": "Microsserviços de Pedidos",
       "id": "shape_8571",
-      "x": -106,
-      "y": 29
+      "x": 40,
+      "y": 10
     },
     {
       "type": "domainStory:workObjectInfo",
       "name": "Pedidos (Compras)",
       "id": "shape_8600",
-      "x": 124,
-      "y": 29
+      "x": 170,
+      "y": 10
     },
     {
       "type": "domainStory:actorSystem",
@@ -794,8 +796,8 @@
       "type": "domainStory:actorSystem",
       "name": "Microsserviços de Produtos",
       "id": "shape_9168",
-      "x": -106,
-      "y": 272
+      "x": 40,
+      "y": 235
     },
     {
       "info": ""
