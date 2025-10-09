@@ -2,8 +2,8 @@ Lista dos arquivos que podem ser utilizados para serem importados diretamente no
 
 > Parte 1:
 
-![Parte 1](Open Finance _p1.svg)
+![Parte 1](OpenFinance_p1.svg)
 
 > Parte 2:
 
-![Parte 2](Open Finance _p2.svg)
+![Parte 2](OpenFinance_p2.svg)
