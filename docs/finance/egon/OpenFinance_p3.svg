@@ -61,17 +61,12 @@
       m 11,0
       a 11,11 0 1,0 -22,0
       a 11,11 0 1,0 22,0
-      " style="fill: white; stroke: black;"/><text lineHeight="1.2" position="absolute" class="djs-labelNumber" style="font-family: Arial, sans-serif; font-size: 11px; font-weight: normal; fill: black;"><tspan x="290" y="564">12</tspan></text></g><path d="M317,560L228,560" class="djs-hit djs-hit-stroke" style="fill: none; stroke-opacity: 0; stroke: white; stroke-width: 15px;"/><rect x="223" y="555" rx="4" width="99" height="10" class="djs-outline" style="fill: none;"/></g></g><g class="djs-group"><g class="djs-element djs-connection" data-element-id="connection_4074" style="display: block;"><g class="djs-visual"><path style="stroke: black; fill: none; stroke-width: 1.5px; stroke-linejoin: round; marker-end: url('#activity-black-black-5sqxjwrjbny1x3u6gw04qs62t');" d="M51,560L147,560"/><text lineHeight="1.2" wordWrap="break-word" overflowWrap="break-word" hyphens="auto" class="djs-label" style="font-family: Arial, sans-serif; font-size: 11px; font-weight: normal; fill: black;"><tspan x="44.55000000000001" y="575">processa </tspan><tspan x="44.55000000000001" y="589">algoritmos</tspan></text><path d="
-      M 71 560
-      m 11,0
-      a 11,11 0 1,0 -22,0
-      a 11,11 0 1,0 22,0
-      " style="fill: white; stroke: black;"/><text lineHeight="1.2" position="absolute" class="djs-labelNumber" style="font-family: Arial, sans-serif; font-size: 11px; font-weight: normal; fill: black;"><tspan x="64" y="564">13</tspan></text></g><path d="M51,560L147,560" class="djs-hit djs-hit-stroke" style="fill: none; stroke-opacity: 0; stroke: white; stroke-width: 15px;"/><rect x="46" y="555" rx="4" width="106" height="10" class="djs-outline" style="fill: none;"/></g></g><g class="djs-group"><g class="djs-element djs-connection" data-element-id="connection_5220" style="display: block;"><g class="djs-visual"><path style="stroke: rgb(0, 0, 0); fill: none; stroke-width: 1.5; stroke-linejoin: round; marker-end: url('#activity-black-#000000-5sqxjwrjbny1x3u6gw04qs62t');" d="M-30,544L-149,493"/><text lineHeight="1.2" wordWrap="break-word" overflowWrap="break-word" hyphens="auto" class="djs-label" style="font-family: Arial, sans-serif; font-size: 11px; font-weight: normal; fill: black;"><tspan x="-74.21118941590844" y="511.07762116818316">geram</tspan></text><path d="
+      " style="fill: white; stroke: black;"/><text lineHeight="1.2" position="absolute" class="djs-labelNumber" style="font-family: Arial, sans-serif; font-size: 11px; font-weight: normal; fill: black;"><tspan x="290" y="564">12</tspan></text></g><path d="M317,560L228,560" class="djs-hit djs-hit-stroke" style="fill: none; stroke-opacity: 0; stroke: white; stroke-width: 15px;"/><rect x="223" y="555" rx="4" width="99" height="10" class="djs-outline" style="fill: none;"/></g></g><g class="djs-group"><g class="djs-element djs-connection selected" data-element-id="connection_4074" style="display: block;"><g class="djs-visual"><path style="stroke: black; fill: none; stroke-width: 1.5px; stroke-linejoin: round; marker-end: url('#activity-black-black-5sqxjwrjbny1x3u6gw04qs62t');" d="M147,560L51,560"/><text lineHeight="1.2" wordWrap="break-word" overflowWrap="break-word" hyphens="auto" class="djs-label" style="font-family: Arial, sans-serif; font-size: 11px; font-weight: normal; fill: black;"><tspan x="75.15" y="575">carrega</tspan></text></g><path d="M147,560L51,560" class="djs-hit djs-hit-stroke" style="fill: none; stroke-opacity: 0; stroke: white; stroke-width: 15px;"/><rect x="46" y="555" rx="4" width="106" height="10" class="djs-outline" style="fill: none;"/></g></g><g class="djs-group"><g class="djs-element djs-connection" data-element-id="connection_5220" style="display: block;"><g class="djs-visual"><path style="stroke: rgb(0, 0, 0); fill: none; stroke-width: 1.5px; stroke-linejoin: round; marker-end: url('#activity-black-#000000-5sqxjwrjbny1x3u6gw04qs62t');" d="M-30,544L-149,493"/><text lineHeight="1.2" wordWrap="break-word" overflowWrap="break-word" hyphens="auto" class="djs-label" style="font-family: Arial, sans-serif; font-size: 11px; font-weight: normal; fill: black;"><tspan x="-74.21118941590844" y="511.07762116818316">geram</tspan></text><path d="
       M -50 533.6895153272675
       m 11,0
       a 11,11 0 1,0 -22,0
       a 11,11 0 1,0 22,0
-      " style="fill: white; stroke: black;"/><text lineHeight="1.2" position="absolute" class="djs-labelNumber" style="font-family: Arial, sans-serif; font-size: 11px; font-weight: normal; fill: black;"><tspan x="-57" y="537.6895153272675">14</tspan></text></g><path d="M-30,544L-149,493" class="djs-hit djs-hit-stroke" style="fill: none; stroke-opacity: 0; stroke: white; stroke-width: 15px;"/><rect x="-154" y="488" rx="4" width="129" height="61" class="djs-outline" style="fill: none;"/></g></g><g class="djs-group"><g class="djs-element djs-connection" data-element-id="connection_2107" style="display: block;"><g class="djs-visual"><path style="stroke: black; fill: none; stroke-width: 1.5; stroke-linejoin: round; marker-end: url('#activity-black-black-5sqxjwrjbny1x3u6gw04qs62t');" d="M-30,574L-154,621"/><text lineHeight="1.2" wordWrap="break-word" overflowWrap="break-word" hyphens="auto" class="djs-label" style="font-family: Arial, sans-serif; font-size: 11px; font-weight: normal; fill: black;"><tspan x="-76.84675976269186" y="605.5805585761511">geram</tspan></text><path d="
+      " style="fill: white; stroke: black;"/><text lineHeight="1.2" position="absolute" class="djs-labelNumber" style="font-family: Arial, sans-serif; font-size: 11px; font-weight: normal; fill: black;"><tspan x="-57" y="537.6895153272675">14</tspan></text></g><path d="M-30,544L-149,493" class="djs-hit djs-hit-stroke" style="fill: none; stroke-opacity: 0; stroke: white; stroke-width: 15px;"/><rect x="-154" y="488" rx="4" width="129" height="61" class="djs-outline" style="fill: none;"/></g></g><g class="djs-group"><g class="djs-element djs-connection" data-element-id="connection_2107" style="display: block;"><g class="djs-visual"><path style="stroke: black; fill: none; stroke-width: 1.5px; stroke-linejoin: round; marker-end: url('#activity-black-black-5sqxjwrjbny1x3u6gw04qs62t');" d="M-30,574L-154,621"/><text lineHeight="1.2" wordWrap="break-word" overflowWrap="break-word" hyphens="auto" class="djs-label" style="font-family: Arial, sans-serif; font-size: 11px; font-weight: normal; fill: black;"><tspan x="-76.84675976269186" y="605.5805585761511">geram</tspan></text><path d="
       M -50 580.5324023730814
       m 11,0
       a 11,11 0 1,0 -22,0
@@ -486,10 +481,10 @@
     },
     {
       "type": "domainStory:activity",
-      "name": "processa algoritmos",
+      "name": "carrega",
       "id": "connection_4074",
       "pickedColor": "black",
-      "number": 13,
+      "number": null,
       "waypoints": [
         {
           "original": {
@@ -508,8 +503,8 @@
           "y": 560
         }
       ],
-      "source": "shape_2723",
-      "target": "shape_0110",
+      "source": "shape_0110",
+      "target": "shape_2723",
       "multipleNumberAllowed": false
     },
     {
