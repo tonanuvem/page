@@ -5,8 +5,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    <!-- https://www.npmjs.com/package/teams-web-send -->
-    <script src="https://unpkg.com/teams-web-send@0.1.1/dist/tws.umd.production.min.js"></script>
     <title>Frontend Web Server</title>
     <meta charset="utf-8">
   </head>
@@ -17,11 +15,10 @@
         <div class="col s12">
           <div class="card blue">
             <div class="card-content white-text">
-              <div class="card-title">NOME ALUNO <br> Envio de mensagem utilizando Webhooks</div>
+              <div class="card-title">NOME ALUNO <br> Envio de mensagem utilizando Webhooks (Slack ou Teams / Power Automate)</div>
             </div>
             <div class="card-content white">
               <table class="bordered">
-                <form id="slackform"></form>
                 <tbody>
                   <tr>
                     <td>URL Webhook</td>
@@ -39,13 +36,11 @@
                         <textarea id="msgInput" class="materialize-textarea"></textarea>
                         <label for="msgInput">Digite uma mensagem</label>
                       </div>
-                    </td>                    
+                    </td>
                   </tr>
-                  <tr>
                   <tr>
                     <td>Clicar</td>
                     <td>
-                      <!-- <center><input value="enviar" onclick="postMSG()" type="button"></center> -->
                       <a class="waves-effect waves-light btn" onclick="postMSG()">enviar</a>
                     </td>
                   </tr>
@@ -58,40 +53,87 @@
               <div class="card-title">Resultado: </div>
             </div>
             <div class="card-content white">
-              <div id="result"></div>
-              <table class="bordered">
-                <tbody>
-                </tbody>
-              </table>
+              <div id="result">Aguardando envio...</div>
             </div>
           </div>
         </div>
         <div class="col s2">&nbsp;</div>
       </div>
     </div>
-    
   </body>
 </html>
 
 <script type="text/javascript">
+// Lê um campo do formulário. Retorna '' se a página não tiver esse campo.
+  function val(id) {
+    var el = document.getElementById(id);
+    return el ? el.value.trim() : '';
+  }
+
 // Definir a função postMSG(), conferir Canal e Webhook:
-  function postMSG(){
-    M.toast({html: 'Enviando a mensagem !', classes: 'rounded'});
-    var webhook = document.getElementById('webhook').value
-    var msg = document.getElementById('msgInput').value
-    var resultDiv = document.querySelector("#result"); // seleciona o elemento HTML que vai receber o resultado
-    const card = `{
-      'text': '${msg}'
-    }`;
-    try {
-      const sendMessage = window.tws.bootstrap();
-	    sendMessage(webhook, card).then(() => {
-        console.log('Solicitação enviada');
-	    });
-      resultDiv.textContent = 'Solicitação enviada';
-    } catch (error) {
-      console.error("Ocorreu um erro:", error); // exibe a mensagem de erro no console
-      resultDiv.textContent = `Ocorreu um erro: ${error.message}`;
+  function postMSG() {
+    M.toast({html: 'Enviando...', classes: 'rounded'});
+
+    var webhook = val('webhook');
+    var msg = val('msgInput');
+    var user = val('user') || 'NOME ALUNO';
+    var icone = val('icone');
+    var canal = val('canal');
+    var resultDiv = document.querySelector("#result"); // elemento HTML que vai receber o resultado
+
+    if (!webhook || !msg) {
+      resultDiv.innerHTML = '<b style="color: red;">Informe o Webhook e a Mensagem.</b>';
+      return;
     }
+
+    // Slack e Teams esperam formatos (e cabeçalhos) diferentes:
+    var slack = webhook.indexOf('hooks.slack.com') !== -1;
+    var opcoes;
+
+    if (slack) {
+      var payload = { "text": msg, "username": user };
+      if (canal) { payload.channel = canal; }
+      if (icone) { payload.icon_emoji = icone; }
+      // Sem o header Content-Type: application/json o navegador não dispara
+      // o preflight OPTIONS, que o Slack não responde.
+      opcoes = {
+        method: 'POST',
+        body: JSON.stringify(payload)
+      };
+    } else {
+      // Teams via Power Automate: MessageCard
+      var secao = {
+        "activityTitle": msg,
+        "activitySubtitle": "Enviado por " + user + " via FIAP Page App"
+      };
+      if (icone) { secao.activityImage = icone; }
+      var card = {
+        "@type": "MessageCard",
+        "@context": "http://schema.org/extensions",
+        "themeColor": "0072C6",
+        "summary": "Nova Mensagem",
+        "sections": [secao]
+      };
+      opcoes = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(card)
+      };
+    }
+
+    // Requisição HTTP simples
+    fetch(webhook, opcoes)
+    .then(function(response) {
+      if (response.ok) {
+        resultDiv.innerHTML = '<b style="color: green;">Solicitação enviada com sucesso! (' + (slack ? 'Slack' : 'Teams') + ')</b>';
+      } else {
+        resultDiv.innerHTML = '<b style="color: red;">Erro no servidor. Status: ' + response.status + '</b>';
+      }
+    })
+    .catch(function(error) {
+      resultDiv.innerHTML = '<b style="color: red;">Erro de rede ou bloqueio de CORS (a mensagem ainda pode ter sido entregue): ' + error.message + '</b>';
+    });
   }
 </script>
